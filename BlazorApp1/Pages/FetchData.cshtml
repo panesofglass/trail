@@ -39,7 +39,7 @@ else
 
     protected override async Task OnInitAsync()
     {
-        forecasts = await Http.GetJsonAsync<Library1.FetchData.WeatherForecast[]>("/sample-data/weather.json");
-        //forecasts = await Library1.FetchData.FetchForecastsAsync(Http);
+        //forecasts = await Http.GetJsonAsync<Library1.FetchData.WeatherForecast[]>("/sample-data/weather.json");
+        forecasts = await Library1.FetchData.FetchForecastsAsync(Http);
     }
 }

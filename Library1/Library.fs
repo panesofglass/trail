@@ -12,6 +12,7 @@ module Counter =
 module FetchData =
     open System
     open System.Net.Http
+    open System.Threading.Tasks
     open Newtonsoft.Json
 
     type WeatherForecast () =
@@ -22,10 +23,12 @@ module FetchData =
 
     [<CompiledName("FetchForecastsAsync")>]
     let fetchForecasts (http:HttpClient) =
+        (*
         async {
-            let! response = Async.AwaitTask <| http.GetAsync("/sample-data/weather.json")
-            let! json = Async.AwaitTask <| response.Content.ReadAsStringAsync()
-            let forecasts = JsonConvert.DeserializeObject<WeatherForecast[]>(json)
-            return forecasts
+            let! json = Async.AwaitTask <| http.GetStringAsync("/sample-data/weather.json")
+            return JsonConvert.DeserializeObject<WeatherForecast[]>(json)
         }
         |> Async.StartAsTask
+        *)
+        http.GetStringAsync("/sample-data/weather.json").ContinueWith(Func<Task<string>,WeatherForecast[]>(fun task ->
+            JsonConvert.DeserializeObject<WeatherForecast[]>(task.Result)))
