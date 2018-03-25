@@ -12,8 +12,7 @@ module Counter =
 module FetchData =
     open System
     open System.Net.Http
-    open System.Threading.Tasks
-    open Newtonsoft.Json
+    open Microsoft.AspNetCore.Blazor
 
     type WeatherForecast () =
         member val Date = Unchecked.defaultof<DateTime> with get, set
@@ -23,12 +22,9 @@ module FetchData =
 
     [<CompiledName("FetchForecastsAsync")>]
     let fetchForecasts (http:HttpClient) =
-        (*
+        //http.GetJsonAsync<WeatherForecast[]>("/sample-data/weather.json")
         async {
-            let! json = Async.AwaitTask <| http.GetStringAsync("/sample-data/weather.json")
-            return JsonConvert.DeserializeObject<WeatherForecast[]>(json)
+            let! forecasts = Async.AwaitTask <| http.GetJsonAsync<WeatherForecast[]>("/sample-data/weather.json")
+            return forecasts
         }
         |> Async.StartAsTask
-        *)
-        http.GetStringAsync("/sample-data/weather.json").ContinueWith(Func<Task<string>,WeatherForecast[]>(fun task ->
-            JsonConvert.DeserializeObject<WeatherForecast[]>(task.Result)))
