@@ -253,6 +253,7 @@ open Microsoft.AspNetCore.Blazor.Layouts
 open Microsoft.AspNetCore.Blazor.Routing
 open BlazorApp1
 open BlazorApp1.Shared
+open FSharp.Blazor
 
 // NOTE: _ViewImports.cshtml appear to be required in the BlazorApp.
 [<Microsoft.AspNetCore.Blazor.Layouts.LayoutAttribute(typeof<MainLayout>)>]
@@ -267,6 +268,7 @@ type Index () =
     inherit Microsoft.AspNetCore.Blazor.Components.BlazorComponent()
     override this.BuildRenderTree(builder) =
         base.BuildRenderTree(builder)
+        (*
         builder.AddContent(0, "\n")
         builder.OpenElement(1, "h1")
         builder.AddContent(2, "Hello, world!")
@@ -276,6 +278,13 @@ type Index () =
         builder.AddAttribute(5, "title", "How is Blazor working for you?")
         builder.CloseComponent()
         builder.AddContent(6, "\n")
+        *)
+        Dom.Document [
+            Dom.el "h1" [] [ Dom.text "Hello, world!" ]
+            Dom.text "\n\nWelcome to your new app.\n\n"
+            Dom.comp<SurveyPrompt> [ "title", "How is Blazor working for you?" ]
+        ]
+        |> RenderTree.build builder
 
 (*
 [<Microsoft.AspNetCore.Blazor.Layouts.LayoutAttribute(typeof<MainLayout>)>]
