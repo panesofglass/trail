@@ -41,7 +41,7 @@ open Microsoft.AspNetCore.Blazor.Routing
 
 // NOTE: _ViewImports.cshtml appear to be required in the BlazorApp.
 type _ViewImports () =
-    inherit Microsoft.AspNetCore.Blazor.Components.BlazorComponent()
+    inherit BlazorComponent()
     override this.BuildRenderTree(builder) =
         base.BuildRenderTree(builder)
 
@@ -59,7 +59,7 @@ open Microsoft.AspNetCore.Blazor.Routing
 open BlazorApp1
 
 type NavMenu () =
-    inherit Microsoft.AspNetCore.Blazor.Components.BlazorComponent()
+    inherit BlazorComponent()
 
     override this.BuildRenderTree(builder) =
         base.BuildRenderTree(builder)
@@ -172,7 +172,7 @@ type NavMenu () =
 
 
 type MainLayout () =
-    inherit Microsoft.AspNetCore.Blazor.Components.BlazorComponent()
+    inherit BlazorComponent()
 
     override this.BuildRenderTree(builder) =
         base.BuildRenderTree(builder)
@@ -210,7 +210,7 @@ type MainLayout () =
                           and set(value) = this.Body <- value
 
 type SurveyPrompt () =
-    inherit Microsoft.AspNetCore.Blazor.Components.BlazorComponent()
+    inherit BlazorComponent()
 
     override this.BuildRenderTree(builder) =
         base.BuildRenderTree(builder)
@@ -258,14 +258,14 @@ open FSharp.Blazor
 // NOTE: _ViewImports.cshtml appear to be required in the BlazorApp.
 [<LayoutAttribute(typeof<MainLayout>)>]
 type _ViewImports () =
-    inherit Microsoft.AspNetCore.Blazor.Components.BlazorComponent()
+    inherit BlazorComponent()
     override this.BuildRenderTree(builder) =
         base.BuildRenderTree(builder)
 
 [<LayoutAttribute(typeof<MainLayout>)>]
 [<RouteAttribute("/")>]
 type Index () =
-    inherit Microsoft.AspNetCore.Blazor.Components.BlazorComponent()
+    inherit BlazorComponent()
     override this.BuildRenderTree(builder) =
         base.BuildRenderTree(builder)
         (*
