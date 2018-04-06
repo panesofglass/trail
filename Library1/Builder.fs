@@ -16,7 +16,7 @@ module Dom =
         | Component of Type * attrs:Attribute list
         | Content of text:string
     
-    type Document = Document of Node list
+    type Document = Fragment of Node list
 
     let comp<'T when 'T :> IComponent> attrs =
         Component(typeof<'T>, attrs |> List.map Attribute)
@@ -31,33 +31,50 @@ module Dom =
 module RenderTree =
     open Dom
 
-    let rec build builder (Document nodes) =
+    let rec build builder (Fragment nodes) =
+        printfn "Received %i nodes" nodes.Length
         buildNodes builder nodes 0 ignore
     and private buildNodes (builder:RenderTree.RenderTreeBuilder) (nodes:Node list) sequence cont =
         match nodes with
-        | [] -> cont sequence
-        | node::nodes -> buildNode builder nodes node sequence
-    and private buildNode (builder:RenderTree.RenderTreeBuilder) next node sequence =
+        | [] ->
+            printfn "Calling cont %A with sequence %i" cont sequence
+            cont sequence
+        | node::nodes ->
+            printfn "building node %A at sequence %i" node sequence
+            buildNode builder nodes node sequence cont
+    and private buildNode (builder:RenderTree.RenderTreeBuilder) next node sequence cont =
         let mutable step = sequence
         match node with
         | Element(name, attrs, nodes) ->
+            printfn "Opening a new %s element at sequence %i" name step
             builder.OpenElement(step, name)
             step <- step + 1
             for Attribute(name, value) in attrs do
+                printfn "Adding the %s attribute at sequence %i" name step
                 builder.AddAttribute(step, name, value)
                 step <- step + 1
-            buildNodes builder nodes step (fun sequence ->
-                builder.CloseComponent()
-                buildNodes builder next sequence ignore
-            )
+            match nodes with
+            | [] -> closeElement builder next step
+            | _ -> buildNodes builder nodes step (closeElement builder next)
         | Component(ty, attrs) ->
+            printfn "Opening a new %s component at sequence %i" (ty.Name) step
             builder.OpenComponent(step, ty)
             step <- step + 1
             for Attribute(name, value) in attrs do
+                printfn "Adding the %s attribute at sequence %i" name step
                 builder.AddAttribute(step, name, value)
                 step <- step + 1
+            printfn "Closing the component at step %i" step
             builder.CloseComponent()
-            buildNodes builder next step ignore
+            builder.AddContent(step, "\n")
+            step <- step + 1
+            buildNodes builder next step cont
         | Content(text) ->
+            printfn """Adding content "%s" at sequence %i""" text step
             builder.AddContent(step, text)
-            buildNodes builder next (step + 1) ignore
+            buildNodes builder next (step + 1) cont
+    and private closeElement (builder:RenderTree.RenderTreeBuilder) next sequence =
+        printfn "Closing the element at step %i" sequence
+        builder.CloseElement()
+        builder.AddContent(sequence, "\n")
+        buildNodes builder next (sequence + 1) ignore

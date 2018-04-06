@@ -282,8 +282,8 @@ type Index () =
         builder.CloseComponent()
         builder.AddContent(6, "\n")
         *)
-        Dom.Document [
-            Dom.el "h1" [] [ Dom.text "Hello, world!" ]
+        Dom.Fragment [
+            Dom.el "h1" ["class", "title"] [ Dom.text "Hello, world!" ]
             Dom.text "\n\nWelcome to your new app.\n\n"
             Dom.comp<SurveyPrompt> [ "title", "How is Blazor working for you?" ]
         ]
