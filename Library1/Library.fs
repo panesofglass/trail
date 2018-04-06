@@ -391,7 +391,6 @@ type Index () =
         |> builder.Render
 
 
-(*
 [<LayoutAttribute(typeof<MainLayout>)>]
 [<RouteAttribute("/counter")>]
 type Counter () =
@@ -401,33 +400,30 @@ type Counter () =
 
     override this.BuildRenderTree(builder) =
         base.BuildRenderTree(builder)
-//        builder.OpenElement(0, "h1")
-//        builder.AddContent(1, "Counter")
-//        builder.CloseElement()
-//        builder.AddContent(2, "\n\n")
-//        builder.OpenElement(3, "p")
-//        builder.AddContent(4, "Current count: ")
-//        builder.AddContent(5, currentCount)
-//        builder.CloseElement()
-//        builder.AddContent(6, "\n\n")
-//        builder.OpenElement(7, "button")
-//        // TODO: determine how to create the onclick RenderTree.RenderTreeFrame
-//        builder.AddAttribute(8, onclick(IncrementCount))
-//        // NOTE: this may be an option ...
-//        //builder.AddAttribute(8, "onclick", UIEventHandler.CreateDelegate(IncrementCount))
-//        builder.AddContent(9, "Click me")
-//        builder.CloseElement()
-//        builder.AddContent(10, "\n\n")
+(*
+        builder.OpenElement(0, "h1")
+        builder.AddContent(1, "Counter")
+        builder.CloseElement()
+        builder.AddContent(2, "\n\n")
+        builder.OpenElement(3, "p")
+        builder.AddContent(4, "Current count: ")
+        builder.AddContent(5, currentCount)
+        builder.CloseElement()
+        builder.AddContent(6, "\n\n")
+        builder.OpenElement(7, "button")
+        builder.AddAttribute(8, this.onclick(Action this.IncrementCount))
+        builder.AddContent(9, "Click me")
+        builder.CloseElement()
+        builder.AddContent(10, "\n\n")
+*)
         Dom.Fragment [
             Dom.h1 [] [Dom.text "Counter"]
             Dom.p [] [
-                Dom.text "Current count:"
-                Dom.text currentCount
+                Dom.text "Current count: "
+                Dom.textf "%i" currentCount
             ]
             Dom.button [
-                    Dom.FrameAttribute(onclick(IncrementCount))
-                    // or
-                    //Dom.UIEventAttribute("onclick", UIEventHandler.CreateDelegate(IncrementCount))
+                    Dom.BlazorFrameAttribute(this.onclick(Action this.IncrementCount))
                 ] [
                     Dom.text "Click me"
                 ]
@@ -435,8 +431,7 @@ type Counter () =
         |> builder.Render
 
     member this.IncrementCount () =
-        currentCount = Library1.Counter.incrementBy(1, currentCount)
-*)
+        currentCount <- Library1.Counter.incrementBy(1, currentCount)
 
 [<LayoutAttribute(typeof<MainLayout>)>]
 [<Route("/fetchdata")>]

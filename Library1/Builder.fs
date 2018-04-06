@@ -8,6 +8,7 @@ module Dom =
     type Attribute =
         | HtmlAttribute of name:string * value:string
         | BlazorObjAttribute of name:string * value:obj
+        | BlazorFrameAttribute of RenderTree.RenderTreeFrame
         | BlazorFragmentAttribute of name:string * (RenderTree.RenderTreeBuilder -> unit)
 
     type Node =
@@ -77,6 +78,9 @@ module RenderTree =
                 | HtmlAttribute(name, value) ->
                     printfn "AddAttribute(%i, %s, %s)" step name value
                     builder.AddAttribute(step, name, value)
+                | BlazorFrameAttribute(frame) ->
+                    printfn "AddAttribute(%i, %A)" step frame
+                    builder.AddAttribute(step, frame)
                 | BlazorObjAttribute(name, value) ->
                     printfn "AddAttribute(%i, %s, %A)" step name value
                     builder.AddAttribute(step, name, value)
