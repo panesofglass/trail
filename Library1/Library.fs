@@ -413,3 +413,46 @@ type FetchData () =
 
     [<Inject>]
     member val private Http : HttpClient = Unchecked.defaultof<HttpClient> with get, set
+
+namespace BlazorApp1
+
+open System
+open System.Collections.Generic
+open System.Linq
+open System.Threading.Tasks
+open System.Net.Http
+open Microsoft.AspNetCore.Blazor
+open Microsoft.AspNetCore.Blazor.Browser.Rendering
+open Microsoft.AspNetCore.Blazor.Browser.Services
+open Microsoft.AspNetCore.Blazor.Components
+open Microsoft.AspNetCore.Blazor.Layouts
+open Microsoft.AspNetCore.Blazor.Routing
+open BlazorApp1
+open BlazorApp1.Shared
+
+type Marker = class end
+
+type App() =
+    inherit BlazorComponent()
+
+    override this.BuildRenderTree(builder) =
+        base.BuildRenderTree(builder)
+        builder.AddContent(0, "\n")
+        builder.OpenComponent<Router>(1)
+        builder.AddAttribute(2, "AppAssembly", box typeof<Marker>.Assembly)
+        builder.CloseComponent()
+        builder.AddContent(3, "\n")
+
+(*
+// TODO: can we go ALL the way?
+module Program =
+    [<EntryPoint>]
+    let main _ =
+        let serviceProvider = new BrowserServiceProvider(fun configure ->
+            // Add any custom services here
+            ()
+        )
+
+        (new BrowserRenderer(serviceProvider)).AddComponent<App>("app")
+        0
+*)
