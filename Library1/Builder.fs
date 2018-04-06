@@ -23,6 +23,24 @@ module Dom =
 
     let el name attrs nodes =
         Element(name, attrs |> List.map Attribute, nodes)
+    
+    let a attrs nodes =
+        Element("a", attrs |> List.map Attribute, nodes)
+    
+    let div attrs nodes =
+        Element("div", attrs |> List.map Attribute, nodes)
+
+    let em attrs nodes =
+        Element("em", attrs |> List.map Attribute, nodes)
+    
+    let h1 attrs nodes =
+        Element("h1", attrs |> List.map Attribute, nodes)
+    
+    let span attrs nodes =
+        Element("span", attrs |> List.map Attribute, nodes)
+
+    let strong attrs nodes =
+        Element("strong", attrs |> List.map Attribute, nodes)
 
     let content renderFragment =
         Content renderFragment
