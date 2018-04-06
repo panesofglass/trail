@@ -207,12 +207,12 @@ type MainLayout () =
         builder.CloseElement()
         builder.AddContent(20, "\n\n")
         *)
-        Dom.el "div" ["class", "container-fluid"] [
-            Dom.el "div" ["class", "row"] [
-                Dom.el "div" ["class", "col-sm-3"] [
+        Dom.div ["class", "container-fluid"] [
+            Dom.div ["class", "row"] [
+                Dom.div ["class", "col-sm-3"] [
                     Dom.comp<NavMenu> []
                 ]
-                Dom.el "div" ["class", "col-sm-9"] [
+                Dom.div ["class", "col-sm-9"] [
                     Dom.content this.Body
                 ]
             ]
@@ -254,11 +254,11 @@ type SurveyPrompt () =
         builder.CloseElement()
         builder.AddContent(17, "\n\n")
         *)
-        Dom.el "div" ["class", "alert alert-survey"; "role", "alert"] [
-            Dom.el "span" ["class", "glyphicon glyphicon-ok-circle"; "aria-hidden", "true"] []
-            Dom.el "strong" [] [Dom.text this.Title]
+        Dom.div ["class", "alert alert-survey"; "role", "alert"] [
+            Dom.span ["class", "glyphicon glyphicon-ok-circle"; "aria-hidden", "true"] []
+            Dom.strong [] [Dom.text this.Title]
             Dom.text "Please take our "
-            Dom.el "a" ["target", "_blank"; "class", "alert-link"; "href", "https://go.microsoft.com/fwlink/?linkid=870381"] [
+            Dom.a ["target", "_blank"; "class", "alert-link"; "href", "https://go.microsoft.com/fwlink/?linkid=870381"] [
                 Dom.text "brief survey"
             ]
             Dom.text " and tell us what you think."
@@ -311,7 +311,7 @@ type Index () =
         builder.AddContent(6, "\n")
         *)
         Dom.Fragment [
-            Dom.el "h1" [] [ Dom.text "Hello, world!" ]
+            Dom.h1 [] [ Dom.text "Hello, world!" ]
             Dom.text "\n\nWelcome to your new app.\n\n"
             Dom.comp<SurveyPrompt> [ "title", "How is Blazor working for you?" ]
         ]
