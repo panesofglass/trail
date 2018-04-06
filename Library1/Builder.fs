@@ -6,10 +6,9 @@ open Microsoft.AspNetCore.Blazor.Components
 
 module Dom =
     type Attribute =
-        Attribute of name:string * value:string
-        with
-        member this.Name = let (Attribute(name, _)) = this in name
-        member this.Value = let (Attribute(_, value)) = this in value
+        | HtmlAttribute of name:string * value:string
+        | BlazorObjAttribute of name:string * value:obj
+        | BlazorFragmentAttribute of name:string * (RenderTree.RenderTreeBuilder -> unit)
 
     type Node =
         | Element of name:string * attrs:Attribute list * nodes:Node list
@@ -19,28 +18,28 @@ module Dom =
         | Fragment of Node list
 
     let comp<'T when 'T :> IComponent> attrs =
-        Component(typeof<'T>, attrs |> List.map Attribute)
+        Component(typeof<'T>, attrs)
 
     let el name attrs nodes =
-        Element(name, attrs |> List.map Attribute, nodes)
+        Element(name, attrs, nodes)
     
     let a attrs nodes =
-        Element("a", attrs |> List.map Attribute, nodes)
+        Element("a", attrs, nodes)
     
     let div attrs nodes =
-        Element("div", attrs |> List.map Attribute, nodes)
+        Element("div", attrs, nodes)
 
     let em attrs nodes =
-        Element("em", attrs |> List.map Attribute, nodes)
+        Element("em", attrs, nodes)
     
     let h1 attrs nodes =
-        Element("h1", attrs |> List.map Attribute, nodes)
+        Element("h1", attrs, nodes)
     
     let span attrs nodes =
-        Element("span", attrs |> List.map Attribute, nodes)
+        Element("span", attrs, nodes)
 
     let strong attrs nodes =
-        Element("strong", attrs |> List.map Attribute, nodes)
+        Element("strong", attrs, nodes)
 
     let content renderFragment =
         Content renderFragment
@@ -70,9 +69,17 @@ module RenderTree =
             printfn "OpenElement(%i, %s)" step name
             builder.OpenElement(step, name)
             step <- step + 1
-            for Attribute(name, value) in attrs do
-                printfn "AddAttribute(%i, %s, %s)" step name value
-                builder.AddAttribute(step, name, value)
+            for attr in attrs do
+                match attr with
+                | HtmlAttribute(name, value) ->
+                    printfn "AddAttribute(%i, %s, %s)" step name value
+                    builder.AddAttribute(step, name, value)
+                | BlazorObjAttribute(name, value) ->
+                    printfn "AddAttribute(%i, %s, %A)" step name value
+                    builder.AddAttribute(step, name, value)
+                | BlazorFragmentAttribute(name, value) ->
+                    printfn "AddAttribute(%i, %s, %A)" step name value
+                    builder.AddAttribute(step, name, (RenderFragment(value)))
                 step <- step + 1
             match nodes with
             | [] -> closeElement builder next cont step
@@ -81,9 +88,17 @@ module RenderTree =
             printfn "OpenComponent(%i, %s)" step (ty.Name)
             builder.OpenComponent(step, ty)
             step <- step + 1
-            for Attribute(name, value) in attrs do
-                printfn "AddAttribute(%i, %s, %s)" step name value
-                builder.AddAttribute(step, name, value)
+            for attr in attrs do
+                match attr with
+                | HtmlAttribute(name, value) ->
+                    printfn "AddAttribute(%i, %s, %s)" step name value
+                    builder.AddAttribute(step, name, value)
+                | BlazorObjAttribute(name, value) ->
+                    printfn "AddAttribute(%i, %s, %A)" step name value
+                    builder.AddAttribute(step, name, value)
+                | BlazorFragmentAttribute(name, value) ->
+                    printfn "AddAttribute(%i, %s, %A)" step name value
+                    builder.AddAttribute(step, name, (RenderFragment(value)))
                 step <- step + 1
             printfn "CloseComponent()"
             builder.CloseComponent()

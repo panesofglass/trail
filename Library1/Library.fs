@@ -207,12 +207,12 @@ type MainLayout () =
         builder.CloseElement()
         builder.AddContent(20, "\n\n")
         *)
-        Dom.div ["class", "container-fluid"] [
-            Dom.div ["class", "row"] [
-                Dom.div ["class", "col-sm-3"] [
+        Dom.div [Dom.HtmlAttribute("class", "container-fluid")] [
+            Dom.div [Dom.HtmlAttribute("class", "row")] [
+                Dom.div [Dom.HtmlAttribute("class", "col-sm-3")] [
                     Dom.comp<NavMenu> []
                 ]
-                Dom.div ["class", "col-sm-9"] [
+                Dom.div [Dom.HtmlAttribute("class", "col-sm-9")] [
                     Dom.content this.Body
                 ]
             ]
@@ -254,11 +254,11 @@ type SurveyPrompt () =
         builder.CloseElement()
         builder.AddContent(17, "\n\n")
         *)
-        Dom.div ["class", "alert alert-survey"; "role", "alert"] [
-            Dom.span ["class", "glyphicon glyphicon-ok-circle"; "aria-hidden", "true"] []
+        Dom.div [Dom.HtmlAttribute("class", "alert alert-survey"); Dom.HtmlAttribute("role", "alert")] [
+            Dom.span [Dom.HtmlAttribute("class", "glyphicon glyphicon-ok-circle"); Dom.HtmlAttribute("aria-hidden", "true")] []
             Dom.strong [] [Dom.text this.Title]
             Dom.text "Please take our "
-            Dom.a ["target", "_blank"; "class", "alert-link"; "href", "https://go.microsoft.com/fwlink/?linkid=870381"] [
+            Dom.a [Dom.HtmlAttribute("target", "_blank"); Dom.HtmlAttribute("class", "alert-link"); Dom.HtmlAttribute("href", "https://go.microsoft.com/fwlink/?linkid=870381")] [
                 Dom.text "brief survey"
             ]
             Dom.text " and tell us what you think."
@@ -313,7 +313,7 @@ type Index () =
         Dom.Fragment [
             Dom.h1 [] [ Dom.text "Hello, world!" ]
             Dom.text "\n\nWelcome to your new app.\n\n"
-            Dom.comp<SurveyPrompt> [ "title", "How is Blazor working for you?" ]
+            Dom.comp<SurveyPrompt> [Dom.HtmlAttribute("title", "How is Blazor working for you?")]
         ]
         |> builder.Render
 
@@ -460,6 +460,8 @@ open Microsoft.AspNetCore.Blazor.Layouts
 open Microsoft.AspNetCore.Blazor.Routing
 open BlazorApp1
 open BlazorApp1.Shared
+open FSharp.Blazor
+open FSharp.Blazor.Extensions
 
 type Marker = class end
 
@@ -468,11 +470,15 @@ type App() =
 
     override this.BuildRenderTree(builder) =
         base.BuildRenderTree(builder)
+        (*
         builder.AddContent(0, "\n")
         builder.OpenComponent<Router>(1)
         builder.AddAttribute(2, "AppAssembly", box typeof<Marker>.Assembly)
         builder.CloseComponent()
         builder.AddContent(3, "\n")
+        *)
+        Dom.comp<Router> [Dom.BlazorObjAttribute("AppAssembly", box typeof<Marker>.Assembly)]
+        |> builder.Render
 
 (*
 // TODO: can we go ALL the way?
