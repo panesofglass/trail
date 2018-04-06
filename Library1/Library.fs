@@ -27,6 +27,7 @@ module FetchData =
         }
         |> Async.StartAsTask
 
+(*
 namespace BlazorApp1
 
 open System
@@ -44,6 +45,7 @@ type _ViewImports () =
     inherit BlazorComponent()
     override this.BuildRenderTree(builder) =
         base.BuildRenderTree(builder)
+*)
 
 namespace BlazorApp1.Shared
 
@@ -56,7 +58,6 @@ open Microsoft.AspNetCore.Blazor
 open Microsoft.AspNetCore.Blazor.Components
 open Microsoft.AspNetCore.Blazor.Layouts
 open Microsoft.AspNetCore.Blazor.Routing
-open BlazorApp1
 
 type NavMenu () =
     inherit BlazorComponent()
@@ -255,12 +256,14 @@ open BlazorApp1
 open BlazorApp1.Shared
 open FSharp.Blazor
 
+(*
 // NOTE: _ViewImports.cshtml appear to be required in the BlazorApp.
 [<LayoutAttribute(typeof<MainLayout>)>]
 type _ViewImports () =
     inherit BlazorComponent()
     override this.BuildRenderTree(builder) =
         base.BuildRenderTree(builder)
+*)
 
 [<LayoutAttribute(typeof<MainLayout>)>]
 [<RouteAttribute("/")>]
@@ -287,10 +290,10 @@ type Index () =
         |> RenderTree.build builder
 
 (*
-[<Microsoft.AspNetCore.Blazor.Layouts.LayoutAttribute(typeof<MainLayout>)>]
-[<Microsoft.AspNetCore.Blazor.Components.RouteAttribute("/counter")>]
+[<LayoutAttribute(typeof<MainLayout>)>]
+[<RouteAttribute("/counter")>]
 type Counter () =
-    inherit Microsoft.AspNetCore.Blazor.Components.BlazorComponent()
+    inherit BlazorComponent()
     
     let mutable currentCount = 0
 
@@ -321,7 +324,7 @@ type Counter () =
 [<LayoutAttribute(typeof<MainLayout>)>]
 [<Route("/fetchdata")>]
 type FetchData () =
-    inherit Microsoft.AspNetCore.Blazor.Components.BlazorComponent()
+    inherit BlazorComponent()
     
     let mutable forecasts : Library1.FetchData.WeatherForecast[] = [||]
 
