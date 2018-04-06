@@ -201,7 +201,7 @@ type NavMenu () =
                             Dom.comp<NavLink> [
                                 Dom.HtmlAttribute("href", "/")
                                 Dom.BlazorObjAttribute("Match", NavLinkMatch.All)
-                                Dom.BlazorFragmentAttribute("ChildContnet", fun builder ->
+                                Dom.BlazorFragmentAttribute("ChildContent", fun builder ->
                                     Dom.Fragment [
                                         Dom.span [Dom.HtmlAttribute("class", "glyphicon glyphicon-home")] []
                                         Dom.text "Home"
@@ -214,7 +214,7 @@ type NavMenu () =
                             Dom.comp<NavLink> [
                                 Dom.HtmlAttribute("href", "/counter")
                                 Dom.BlazorObjAttribute("Match", NavLinkMatch.All)
-                                Dom.BlazorFragmentAttribute("ChildContnet", fun builder ->
+                                Dom.BlazorFragmentAttribute("ChildContent", fun builder ->
                                     Dom.Fragment [
                                         Dom.span [Dom.HtmlAttribute("class", "glyphicon glyphicon-home")] []
                                         Dom.text "Counter"
@@ -227,7 +227,7 @@ type NavMenu () =
                             Dom.comp<NavLink> [
                                 Dom.HtmlAttribute("href", "/fetchdata")
                                 Dom.BlazorObjAttribute("Match", NavLinkMatch.All)
-                                Dom.BlazorFragmentAttribute("ChildContnet", fun builder ->
+                                Dom.BlazorFragmentAttribute("ChildContent", fun builder ->
                                     Dom.Fragment [
                                         Dom.span [Dom.HtmlAttribute("class", "glyphicon glyphicon-home")] []
                                         Dom.text "Fetch data"
