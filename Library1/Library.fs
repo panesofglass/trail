@@ -172,6 +172,77 @@ type NavMenu () =
         builder.AddContent(80, "\n")
         builder.CloseElement()
         builder.AddContent(81, "\n")
+(*
+        // This is triggering endless loops.
+        Dom.div [Dom.HtmlAttribute("class", "main-nav")] [
+            Dom.div [Dom.HtmlAttribute("class", "navbar navbar-inverse")] [
+                Dom.div [Dom.HtmlAttribute("class", "navbar-header")] [
+                    Dom.button [
+                            Dom.HtmlAttribute("type", "button")
+                            Dom.HtmlAttribute("class", "navbar-toggle")
+                            Dom.HtmlAttribute("data-toggle", "collapse")
+                            Dom.HtmlAttribute("data-target", ".navbar-collapse")
+                        ] [
+                            Dom.span [Dom.HtmlAttribute("class", "sr-only")] [
+                                Dom.text "Toggle navigation"
+                            ]
+                            Dom.span [Dom.HtmlAttribute("class", "icon-bar")] []
+                            Dom.span [Dom.HtmlAttribute("class", "icon-bar")] []
+                            Dom.span [Dom.HtmlAttribute("class", "icon-bar")] []
+                        ]
+                    Dom.a [Dom.HtmlAttribute("class", "navbar-brand"); Dom.HtmlAttribute("href", "/")] [
+                        Dom.text "BlazorApp1"
+                    ]
+                ]
+                Dom.div [Dom.HtmlAttribute("class", "clearfix")] []
+                Dom.div [Dom.HtmlAttribute("class", "navbar-collapse collapse")] [
+                    Dom.ul [Dom.HtmlAttribute("class", "nav navbar-nav")] [
+                        Dom.li [] [
+                            Dom.comp<NavLink> [
+                                Dom.HtmlAttribute("href", "/")
+                                Dom.BlazorObjAttribute("Match", NavLinkMatch.All)
+                                Dom.BlazorFragmentAttribute("ChildContnet", fun builder ->
+                                    Dom.Fragment [
+                                        Dom.span [Dom.HtmlAttribute("class", "glyphicon glyphicon-home")] []
+                                        Dom.text "Home"
+                                    ]
+                                    |> builder.Render
+                                )
+                            ]
+                        ]
+                        Dom.li [] [
+                            Dom.comp<NavLink> [
+                                Dom.HtmlAttribute("href", "/counter")
+                                Dom.BlazorObjAttribute("Match", NavLinkMatch.All)
+                                Dom.BlazorFragmentAttribute("ChildContnet", fun builder ->
+                                    Dom.Fragment [
+                                        Dom.span [Dom.HtmlAttribute("class", "glyphicon glyphicon-home")] []
+                                        Dom.text "Counter"
+                                    ]
+                                    |> builder.Render
+                                )
+                            ]
+                        ]
+                        Dom.li [] [
+                            Dom.comp<NavLink> [
+                                Dom.HtmlAttribute("href", "/fetchdata")
+                                Dom.BlazorObjAttribute("Match", NavLinkMatch.All)
+                                Dom.BlazorFragmentAttribute("ChildContnet", fun builder ->
+                                    Dom.Fragment [
+                                        Dom.span [Dom.HtmlAttribute("class", "glyphicon glyphicon-home")] []
+                                        Dom.text "Fetch data"
+                                    ]
+                                    |> builder.Render
+                                )
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+        |> builder.Render
+*)
+
 
 
 type MainLayout () =
@@ -179,7 +250,7 @@ type MainLayout () =
 
     override this.BuildRenderTree(builder) =
         base.BuildRenderTree(builder)
-        (*
+(*
         builder.AddContent(0, "\n")
         builder.OpenElement(1, "div")
         builder.AddAttribute(2, "class", "container-fluid")
@@ -206,7 +277,7 @@ type MainLayout () =
         builder.AddContent(19, "\n")
         builder.CloseElement()
         builder.AddContent(20, "\n\n")
-        *)
+*)
         Dom.div [Dom.HtmlAttribute("class", "container-fluid")] [
             Dom.div [Dom.HtmlAttribute("class", "row")] [
                 Dom.div [Dom.HtmlAttribute("class", "col-sm-3")] [
@@ -219,6 +290,7 @@ type MainLayout () =
         ]
         |> builder.Render
 
+
     member val Body : RenderFragment = Unchecked.defaultof<RenderFragment> with get, set
 
     interface ILayoutComponent with
@@ -230,7 +302,7 @@ type SurveyPrompt () =
 
     override this.BuildRenderTree(builder) =
         base.BuildRenderTree(builder)
-        (*
+(*
         builder.OpenElement(0, "div")
         builder.AddAttribute(1, "class", "alert alert-survey")
         builder.AddAttribute(2, "role", "alert")
@@ -253,7 +325,7 @@ type SurveyPrompt () =
         builder.AddContent(16, "\n    and tell us what you think.\n")
         builder.CloseElement()
         builder.AddContent(17, "\n\n")
-        *)
+*)
         Dom.div [Dom.HtmlAttribute("class", "alert alert-survey"); Dom.HtmlAttribute("role", "alert")] [
             Dom.span [Dom.HtmlAttribute("class", "glyphicon glyphicon-ok-circle"); Dom.HtmlAttribute("aria-hidden", "true")] []
             Dom.strong [] [Dom.text this.Title]
@@ -264,6 +336,7 @@ type SurveyPrompt () =
             Dom.text " and tell us what you think."
         ]
         |> builder.Render
+
 
     // This is to demonstrate how a parent component can supply parameters
     member val Title : string = Unchecked.defaultof<string> with get, set
@@ -299,7 +372,7 @@ type Index () =
     inherit BlazorComponent()
     override this.BuildRenderTree(builder) =
         base.BuildRenderTree(builder)
-        (*
+(*
         builder.AddContent(0, "\n")
         builder.OpenElement(1, "h1")
         builder.AddContent(2, "Hello, world!")
@@ -309,13 +382,14 @@ type Index () =
         builder.AddAttribute(5, "title", "How is Blazor working for you?")
         builder.CloseComponent()
         builder.AddContent(6, "\n")
-        *)
+*)
         Dom.Fragment [
             Dom.h1 [] [ Dom.text "Hello, world!" ]
             Dom.text "\n\nWelcome to your new app.\n\n"
             Dom.comp<SurveyPrompt> [Dom.HtmlAttribute("title", "How is Blazor working for you?")]
         ]
         |> builder.Render
+
 
 (*
 [<LayoutAttribute(typeof<MainLayout>)>]
@@ -327,23 +401,38 @@ type Counter () =
 
     override this.BuildRenderTree(builder) =
         base.BuildRenderTree(builder)
-        builder.OpenElement(0, "h1")
-        builder.AddContent(1, "Counter")
-        builder.CloseElement()
-        builder.AddContent(2, "\n\n")
-        builder.OpenElement(3, "p")
-        builder.AddContent(4, "Current count: ")
-        builder.AddContent(5, currentCount)
-        builder.CloseElement()
-        builder.AddContent(6, "\n\n")
-        builder.OpenElement(7, "button")
-        // TODO: determine how to create the onclick RenderTree.RenderTreeFrame
-        builder.AddAttribute(8, onclick(IncrementCount))
-        // NOTE: this may be an option ...
-        //builder.AddAttribute(8, "onclick", UIEventHandler.CreateDelegate(IncrementCount))
-        builder.AddContent(9, "Click me")
-        builder.CloseElement()
-        builder.AddContent(10, "\n\n")
+//        builder.OpenElement(0, "h1")
+//        builder.AddContent(1, "Counter")
+//        builder.CloseElement()
+//        builder.AddContent(2, "\n\n")
+//        builder.OpenElement(3, "p")
+//        builder.AddContent(4, "Current count: ")
+//        builder.AddContent(5, currentCount)
+//        builder.CloseElement()
+//        builder.AddContent(6, "\n\n")
+//        builder.OpenElement(7, "button")
+//        // TODO: determine how to create the onclick RenderTree.RenderTreeFrame
+//        builder.AddAttribute(8, onclick(IncrementCount))
+//        // NOTE: this may be an option ...
+//        //builder.AddAttribute(8, "onclick", UIEventHandler.CreateDelegate(IncrementCount))
+//        builder.AddContent(9, "Click me")
+//        builder.CloseElement()
+//        builder.AddContent(10, "\n\n")
+        Dom.Fragment [
+            Dom.h1 [] [Dom.text "Counter"]
+            Dom.p [] [
+                Dom.text "Current count:"
+                Dom.text currentCount
+            ]
+            Dom.button [
+                    Dom.FrameAttribute(onclick(IncrementCount))
+                    // or
+                    //Dom.UIEventAttribute("onclick", UIEventHandler.CreateDelegate(IncrementCount))
+                ] [
+                    Dom.text "Click me"
+                ]
+        ]
+        |> builder.Render
 
     member this.IncrementCount () =
         currentCount = Library1.Counter.incrementBy(1, currentCount)
@@ -434,6 +523,38 @@ type FetchData () =
             builder.CloseElement()
             builder.AddContent(54, "\n")
         builder.AddContent(55, "\n")
+(*
+        // This appears to be triggering endless loops
+        Dom.Fragment [
+            yield Dom.h1 [] [Dom.text "Weather forecast"]
+            yield Dom.p [] [Dom.text "This component domonstrates fetching data from the server."]
+            if Array.isEmpty forecasts then
+                yield Dom.p [] [
+                    Dom.em [] [Dom.text "Loading..."]
+                ]
+            else
+                yield Dom.table [Dom.HtmlAttribute("class", "table")] [
+                    Dom.thead [] [
+                        Dom.tr [] [
+                            Dom.th [] [Dom.text "Date"]
+                            Dom.th [] [Dom.text "Temp. (C)"]
+                            Dom.th [] [Dom.text "Temp. (F)"]
+                            Dom.th [] [Dom.text "Summary"]
+                        ]
+                    ]
+                    Dom.tbody [] [
+                        for forecast in forecasts ->
+                            Dom.tr [] [
+                                Dom.td [] [Dom.text (forecast.Date.ToShortDateString())]
+                                Dom.td [] [Dom.textf "%i" forecast.TemperatureC]
+                                Dom.td [] [Dom.textf "%i" forecast.TemperatureF]
+                                Dom.td [] [Dom.text forecast.Summary]
+                            ]
+                    ]
+                ]
+        ]
+        |> builder.Render
+*)
 
     override this.OnInitAsync() =
         async {
@@ -470,15 +591,16 @@ type App() =
 
     override this.BuildRenderTree(builder) =
         base.BuildRenderTree(builder)
-        (*
+(*
         builder.AddContent(0, "\n")
         builder.OpenComponent<Router>(1)
         builder.AddAttribute(2, "AppAssembly", box typeof<Marker>.Assembly)
         builder.CloseComponent()
         builder.AddContent(3, "\n")
-        *)
+*)
         Dom.comp<Router> [Dom.BlazorObjAttribute("AppAssembly", box typeof<Marker>.Assembly)]
         |> builder.Render
+
 
 (*
 // TODO: can we go ALL the way?
