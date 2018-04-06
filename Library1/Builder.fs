@@ -7,12 +7,11 @@ open Microsoft.AspNetCore.Blazor.Components
 module Dom =
     type Attribute =
         | HtmlAttribute of name:string * value:string
+        | BlazorFrameAttribute of frame:RenderTree.RenderTreeFrame
         | BlazorObjAttribute of name:string * value:obj
-        | BlazorFrameAttribute of RenderTree.RenderTreeFrame
-        | BlazorFragmentAttribute of name:string * (RenderTree.RenderTreeBuilder -> unit)
 
     type Node =
-        | Element of name:string * attrs:Attribute list * nodes:Node list
+        | Element of name:string * attrs:Attribute list * children:Node list
         | Component of Type * attrs:Attribute list * children:Node list
         | Content of RenderFragment
         | Text of text:string
@@ -21,128 +20,177 @@ module Dom =
     let comp<'T when 'T :> IComponent> attrs children =
         Component(typeof<'T>, attrs, children)
 
-    let el name attrs nodes = Element(name, attrs, nodes)
-    let a attrs nodes = Element("a", attrs, nodes)
-    let button attrs nodes = Element("button", attrs, nodes)
-    let div attrs nodes = Element("div", attrs, nodes)
-    let em attrs nodes = Element("em", attrs, nodes)
-    let h1 attrs nodes = Element("h1", attrs, nodes)
-    let h2 attrs nodes = Element("h2", attrs, nodes)
-    let h3 attrs nodes = Element("h3", attrs, nodes)
-    let h4 attrs nodes = Element("h4", attrs, nodes)
-    let h5 attrs nodes = Element("h5", attrs, nodes)
-    let p attrs nodes = Element("p", attrs, nodes)
-    let span attrs nodes = Element("span", attrs, nodes)
-    let strong attrs nodes = Element("strong", attrs, nodes)
+    let el name attrs children = Element(name, attrs, children)
+    let a attrs children = Element("a", attrs, children)
+    let button attrs children = Element("button", attrs, children)
+    let div attrs children = Element("div", attrs, children)
+    let em attrs children = Element("em", attrs, children)
+    let h1 attrs children = Element("h1", attrs, children)
+    let h2 attrs children = Element("h2", attrs, children)
+    let h3 attrs children = Element("h3", attrs, children)
+    let h4 attrs children = Element("h4", attrs, children)
+    let h5 attrs children = Element("h5", attrs, children)
+    let p attrs children = Element("p", attrs, children)
+    let span attrs children = Element("span", attrs, children)
+    let strong attrs children = Element("strong", attrs, children)
 
-    let ul attrs nodes = Element("ul", attrs, nodes)
-    let li attrs nodes = Element("li", attrs, nodes)
+    let ul attrs children = Element("ul", attrs, children)
+    let li attrs children = Element("li", attrs, children)
 
-    let table attrs nodes = Element("table", attrs, nodes)
-    let thead attrs nodes = Element("thead", attrs, nodes)
-    let tbody attrs nodes = Element("tbody", attrs, nodes)
-    let tfoot attrs nodes = Element("tfoot", attrs, nodes)
-    let tr attrs nodes = Element("tr", attrs, nodes)
-    let th attrs nodes = Element("th", attrs, nodes)
-    let td attrs nodes = Element("td", attrs, nodes)
+    let table attrs children = Element("table", attrs, children)
+    let thead attrs children = Element("thead", attrs, children)
+    let tbody attrs children = Element("tbody", attrs, children)
+    let tfoot attrs children = Element("tfoot", attrs, children)
+    let tr attrs children = Element("tr", attrs, children)
+    let th attrs children = Element("th", attrs, children)
+    let td attrs children = Element("td", attrs, children)
 
-    let content renderFragment = Content renderFragment
+    let content fragment = Content fragment
     
-    let text content = Text content
+    let text textContent = Text textContent
     let textf format content = Text(Printf.sprintf format content)
     
 module RenderTree =
     open Dom
 
-    let rec render builder node =
+    type AST =
+        | OpenElement of sequence:int * name:string
+        | CloseElement
+        | OpenComponent of sequence:int * ty:Type
+        | CloseComponent
+        | AddTextContent of sequence:int * textContent:string
+        | AddRenderFragmentContent of sequence:int * fragment:RenderFragment
+        | AddBlazorFragmentAttribute of sequence:int * fragment:AST list
+        | AddBlazorFrameAttribute of sequence:int * frame:RenderTree.RenderTreeFrame
+        | AddBlazorObjAttribute of sequence:int * name:string * value:obj
+        | AddHtmlAttribute of sequence:int * name:string * value:string
+
+    let rec build node =
         match node with
         | Fragment nodes ->
-            renderNodes builder nodes 0 ignore
-        | _ -> renderNode builder [] node 0 ignore
-    and private renderNodes (builder:RenderTree.RenderTreeBuilder) (nodes:Node list) sequence cont =
+            buildNodes nodes 0 id
+        | _ -> buildNode [] node 0 id
+        |> snd
+
+    and private buildNodes (nodes:Node list) sequence cont =
         match nodes with
         | [] ->
-            cont sequence
+            cont(sequence, [])
         | node::nodes ->
-            renderNode builder nodes node sequence cont
-    and private renderNode (builder:RenderTree.RenderTreeBuilder) next node sequence cont =
+            buildNode nodes node sequence cont
+
+    and private buildNode next node sequence cont =
         let mutable step = sequence
         match node with
-        | Element(name, attrs, nodes) ->
-            printfn "OpenElement(%i, %s)" step name
-            builder.OpenElement(step, name)
-            step <- step + 1
-            for attr in attrs do
-                match attr with
-                | HtmlAttribute(name, value) ->
-                    printfn "AddAttribute(%i, %s, %s)" step name value
-                    builder.AddAttribute(step, name, value)
-                | BlazorFrameAttribute(frame) ->
-                    printfn "AddAttribute(%i, %A)" step frame
-                    builder.AddAttribute(step, frame)
-                | BlazorObjAttribute(name, value) ->
-                    printfn "AddAttribute(%i, %s, %A)" step name value
-                    builder.AddAttribute(step, name, value)
-                | BlazorFragmentAttribute(name, value) ->
-                    printfn "AddAttribute(%i, %s, %A)" step name value
-                    builder.AddAttribute(step, name, (RenderFragment(value)))
-                step <- step + 1
-            match nodes with
-            | [] -> closeElement builder next cont step
-            | _ -> renderNodes builder nodes step (closeElement builder next cont)
-        | Component(ty, attrs, children) ->
-            printfn "OpenComponent(%i, %s)" step (ty.Name)
-            builder.OpenComponent(step, ty)
-            step <- step + 1
-            for attr in attrs do
-                match attr with
-                | HtmlAttribute(name, value) ->
-                    printfn "AddAttribute(%i, %s, %s)" step name value
-                    builder.AddAttribute(step, name, value)
-                | BlazorFrameAttribute(frame) ->
-                    printfn "AddAttribute(%i, %A)" step frame
-                    builder.AddAttribute(step, frame)
-                | BlazorObjAttribute(name, value) ->
-                    printfn "AddAttribute(%i, %s, %A)" step name value
-                    builder.AddAttribute(step, name, value)
-                | BlazorFragmentAttribute(name, value) ->
-                    printfn "AddAttribute(%i, %s, %A)" step name value
-                    builder.AddAttribute(step, name, (RenderFragment(value)))
-                step <- step + 1
+        | Element(name, attrs, children) ->
+            let instructions =
+                [
+                    yield OpenElement(step, name)
+                    step <- step + 1
+                    for attr in attrs do
+                        match attr with
+                        | HtmlAttribute(name, value) ->
+                            yield AddHtmlAttribute(step, name, value)
+                        | BlazorFrameAttribute(frame) ->
+                            yield AddBlazorFrameAttribute(step, frame)
+                        | BlazorObjAttribute(name, value) ->
+                            yield AddBlazorObjAttribute(step, name, value)
+                        step <- step + 1
+                ]
             match children with
-            | [] -> closeComponent builder next cont step
+            | [] -> closeElement next (fun (sequence', rest) -> cont(sequence', instructions @ rest)) step
             | _ ->
-                // TODO: recurse to apply the correct sequence value.
-                let renderFragment = RenderFragment(fun builder2 -> render builder2 (Fragment children))
-                printfn "AddContent(%i, ChildContent, %A)" step renderFragment
-                builder.AddAttribute(step, "ChildContent", renderFragment)
-                step <- step + 1
-                closeComponent builder next cont step
-        | Content(renderFragment) ->
-            printfn "AddContent(%i, %A)" step renderFragment
-            builder.AddContent(step, renderFragment)
-            renderNodes builder next (step + 1) cont
-        | Text(text) ->
-            printfn "AddContent(%i, %s)" step text
-            builder.AddContent(step, text)
-            renderNodes builder next (step + 1) cont
+                // TODO: Correctly nest closeElement with the rest of the instructions.
+                buildNodes children step (fun (sequence', rest) -> closeElement next (fun (sequence'', rest') -> cont(sequence'', instructions @ rest')) sequence')
+
+        | Component(ty, attrs, children) ->
+            let instructions =
+                [
+                    yield OpenComponent(step, ty)
+                    step <- step + 1
+                    for attr in attrs do
+                        match attr with
+                        | HtmlAttribute(name, value) ->
+                            yield AddHtmlAttribute(step, name, value)
+                        | BlazorFrameAttribute(frame) ->
+                            yield AddBlazorFrameAttribute(step, frame)
+                        | BlazorObjAttribute(name, value) ->
+                            yield AddBlazorObjAttribute(step, name, value)
+                        step <- step + 1
+                ]
+            match children with
+            | [] -> closeComponent next (fun (sequence', rest) -> cont(sequence', instructions @ rest)) step
+            | _ ->
+                // TODO: build the RenderFragment delegate with instructions for the children, maintaining the sequence'.
+                // NOTE: this should work a lot like, and may be able to leverage, Fragment. See TODO.
+                closeComponent next (fun (sequence', rest) -> cont(sequence', instructions @ rest)) step
+
+        | Content(fragment) ->
+            buildNodes next (step + 1) (fun (sequence', rest) -> cont(sequence', [AddRenderFragmentContent(step, fragment)] @ rest))
+
+        | Text(textContent) ->
+            buildNodes next (step + 1) (fun (sequence', rest) -> cont(sequence', [AddTextContent(step, textContent)] @ rest))
+
         | Fragment(nodes) ->
-            renderNodes builder nodes step cont
-            // need to wrap the next in a callback that then calls cont? (fun sequence -> renderNodes builder next sequence cont)
-    and private closeElement (builder:RenderTree.RenderTreeBuilder) next cont sequence =
-        printfn "CloseElement()"
-        builder.CloseElement()
-        printfn "AddContent(%i, \\n)" sequence
-        builder.AddContent(sequence, "\n")
-        renderNodes builder next (sequence + 1) cont
-    and private closeComponent (builder:RenderTree.RenderTreeBuilder) next cont sequence =
-        printfn "CloseComponent()"
-        builder.CloseComponent()
-        printfn "AddContent(%i, \\n)" sequence
-        builder.AddContent(sequence, "\n")
-        renderNodes builder next (sequence + 1) cont
+            // TODO: need to wrap the next in a callback that then calls cont? (fun sequence -> buildNodes builder next sequence cont)
+            buildNodes nodes step cont
+
+    and private closeElement next cont sequence =
+        let instructions =
+            [
+                CloseElement
+                AddTextContent(sequence, "\n")
+            ]
+        buildNodes next (sequence + 1) (fun (sequence', rest) -> cont (sequence', instructions @ rest))
+
+    and private closeComponent next cont sequence =
+        let instructions =
+            [
+                CloseComponent
+                AddTextContent(sequence, "\n")
+            ]
+        buildNodes next (sequence + 1) (fun (sequence', rest) -> cont (sequence', instructions @ rest))
+
+    let rec render (builder:RenderTree.RenderTreeBuilder) instructions =
+        for instruction in instructions do
+            match instruction with
+            | OpenElement(sequence, name) ->
+                builder.OpenElement(sequence, name)
+            | CloseElement ->
+                builder.CloseElement()
+            | OpenComponent(sequence, ty) ->
+                builder.OpenComponent(sequence, ty)
+            | CloseComponent ->
+                builder.CloseComponent()
+            | AddTextContent(sequence, textContent) ->
+                builder.AddContent(sequence, textContent)
+            | AddRenderFragmentContent(sequence, fragment) ->
+                builder.AddContent(sequence, fragment)
+            | AddBlazorFragmentAttribute(sequence, fragment) ->
+                builder.AddAttribute(sequence, "ChildContent", RenderFragment(fun builder2 -> render builder2 fragment))
+            | AddBlazorFrameAttribute(sequence, frame) ->
+                builder.AddAttribute(sequence, frame)
+            | AddBlazorObjAttribute(sequence, name, value) ->
+                builder.AddAttribute(sequence, name, value)
+            | AddHtmlAttribute(sequence, name, value) ->
+                builder.AddAttribute(sequence, name, value)
 
 module Extensions =
+
+    type Dom.Node with
+
+        /// Compiles a Dom.Node into an AST tree.
+        member this.Compile() =
+            RenderTree.build this
+
     type Microsoft.AspNetCore.Blazor.RenderTree.RenderTreeBuilder with
-        /// Renders a Dom.Document.
-        member this.Render(document) = RenderTree.render this document
+        
+        /// Renders the compiled Dom.Node instructions.
+        member this.Render(instructions) =
+            instructions |> RenderTree.render this
+
+        /// Renders a Dom.Node.
+        member this.Render(document) =
+            document
+            |> RenderTree.build
+            |> RenderTree.render this
