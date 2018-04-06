@@ -58,6 +58,7 @@ open Microsoft.AspNetCore.Blazor
 open Microsoft.AspNetCore.Blazor.Components
 open Microsoft.AspNetCore.Blazor.Layouts
 open Microsoft.AspNetCore.Blazor.Routing
+open FSharp.Blazor
 
 type NavMenu () =
     inherit BlazorComponent()
@@ -215,6 +216,7 @@ type SurveyPrompt () =
 
     override this.BuildRenderTree(builder) =
         base.BuildRenderTree(builder)
+        (*
         builder.OpenElement(0, "div")
         builder.AddAttribute(1, "class", "alert alert-survey")
         builder.AddAttribute(2, "role", "alert")
@@ -237,6 +239,19 @@ type SurveyPrompt () =
         builder.AddContent(16, "\n    and tell us what you think.\n")
         builder.CloseElement()
         builder.AddContent(17, "\n\n")
+        *)
+        Dom.Fragment [
+            Dom.el "div" ["class", "alert alert-survey"; "role", "alert"] [
+                Dom.el "span" ["class", "glyphicon glyphicon-ok-circle"; "aria-hidden", "true"] []
+                Dom.el "strong" [] [Dom.text this.Title]
+                Dom.text "Please take our "
+                Dom.el "a" ["target", "_blank"; "class", "alert-link"; "href", "https://go.microsoft.com/fwlink/?linkid=870381"] [
+                    Dom.text "brief survey"
+                ]
+                Dom.text " and tell us what you think."
+            ]
+        ]
+        |> RenderTree.build builder
 
     // This is to demonstrate how a parent component can supply parameters
     member val Title : string = Unchecked.defaultof<string> with get, set
@@ -283,7 +298,7 @@ type Index () =
         builder.AddContent(6, "\n")
         *)
         Dom.Fragment [
-            Dom.el "h1" ["class", "title"] [ Dom.text "Hello, world!" ]
+            Dom.el "h1" [] [ Dom.text "Hello, world!" ]
             Dom.text "\n\nWelcome to your new app.\n\n"
             Dom.comp<SurveyPrompt> [ "title", "How is Blazor working for you?" ]
         ]

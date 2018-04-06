@@ -32,49 +32,48 @@ module RenderTree =
     open Dom
 
     let rec build builder (Fragment nodes) =
-        printfn "Received %i nodes" nodes.Length
         buildNodes builder nodes 0 ignore
     and private buildNodes (builder:RenderTree.RenderTreeBuilder) (nodes:Node list) sequence cont =
         match nodes with
         | [] ->
-            printfn "Calling cont %A with sequence %i" cont sequence
             cont sequence
         | node::nodes ->
-            printfn "building node %A at sequence %i" node sequence
             buildNode builder nodes node sequence cont
     and private buildNode (builder:RenderTree.RenderTreeBuilder) next node sequence cont =
         let mutable step = sequence
         match node with
         | Element(name, attrs, nodes) ->
-            printfn "Opening a new %s element at sequence %i" name step
+            printfn "OpenElement(%i, %s)" step name
             builder.OpenElement(step, name)
             step <- step + 1
             for Attribute(name, value) in attrs do
-                printfn "Adding the %s attribute at sequence %i" name step
+                printfn "AddAttribute(%i, %s, %s)" step name value
                 builder.AddAttribute(step, name, value)
                 step <- step + 1
             match nodes with
-            | [] -> closeElement builder next step
-            | _ -> buildNodes builder nodes step (closeElement builder next)
+            | [] -> closeElement builder next cont step
+            | _ -> buildNodes builder nodes step (closeElement builder next cont)
         | Component(ty, attrs) ->
-            printfn "Opening a new %s component at sequence %i" (ty.Name) step
+            printfn "OpenComponent(%i, %s)" step (ty.Name)
             builder.OpenComponent(step, ty)
             step <- step + 1
             for Attribute(name, value) in attrs do
-                printfn "Adding the %s attribute at sequence %i" name step
+                printfn "AddAttribute(%i, %s, %s)" step name value
                 builder.AddAttribute(step, name, value)
                 step <- step + 1
-            printfn "Closing the component at step %i" step
+            printfn "CloseComponent()"
             builder.CloseComponent()
+            printfn "AddContent(%i, \\n)" step
             builder.AddContent(step, "\n")
             step <- step + 1
             buildNodes builder next step cont
         | Content(text) ->
-            printfn """Adding content "%s" at sequence %i""" text step
+            printfn "AddContent(%i, %s)" step text
             builder.AddContent(step, text)
             buildNodes builder next (step + 1) cont
-    and private closeElement (builder:RenderTree.RenderTreeBuilder) next sequence =
-        printfn "Closing the element at step %i" sequence
+    and private closeElement (builder:RenderTree.RenderTreeBuilder) next cont sequence =
+        printfn "CloseElement()"
         builder.CloseElement()
+        printfn "AddContent(%i, \\n)" sequence
         builder.AddContent(sequence, "\n")
-        buildNodes builder next (sequence + 1) ignore
+        buildNodes builder next (sequence + 1) cont
