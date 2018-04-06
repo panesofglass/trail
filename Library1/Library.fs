@@ -66,6 +66,7 @@ type NavMenu () =
 
     override this.BuildRenderTree(builder) =
         base.BuildRenderTree(builder)
+
         builder.OpenElement(0, "div")
         builder.AddAttribute(1, "class", "main-nav")
         builder.AddContent(2, "\n    ")
@@ -172,6 +173,7 @@ type NavMenu () =
         builder.AddContent(80, "\n")
         builder.CloseElement()
         builder.AddContent(81, "\n")
+
 (*
         // This is triggering endless loops.
         Dom.div [Dom.HtmlAttribute("class", "main-nav")] [
@@ -199,42 +201,30 @@ type NavMenu () =
                     Dom.ul [Dom.HtmlAttribute("class", "nav navbar-nav")] [
                         Dom.li [] [
                             Dom.comp<NavLink> [
-                                Dom.HtmlAttribute("href", "/")
-                                Dom.BlazorObjAttribute("Match", NavLinkMatch.All)
-                                Dom.BlazorFragmentAttribute("ChildContent", fun builder ->
-                                    Dom.Fragment [
-                                        Dom.span [Dom.HtmlAttribute("class", "glyphicon glyphicon-home")] []
-                                        Dom.text "Home"
-                                    ]
-                                    |> builder.Render
-                                )
-                            ]
+                                    Dom.HtmlAttribute("href", "/")
+                                    Dom.BlazorObjAttribute("Match", NavLinkMatch.All)
+                                ] [
+                                    Dom.span [Dom.HtmlAttribute("class", "glyphicon glyphicon-home")] []
+                                    Dom.text "Home"
+                                ]
                         ]
                         Dom.li [] [
                             Dom.comp<NavLink> [
-                                Dom.HtmlAttribute("href", "/counter")
-                                Dom.BlazorObjAttribute("Match", NavLinkMatch.All)
-                                Dom.BlazorFragmentAttribute("ChildContent", fun builder ->
-                                    Dom.Fragment [
-                                        Dom.span [Dom.HtmlAttribute("class", "glyphicon glyphicon-home")] []
-                                        Dom.text "Counter"
-                                    ]
-                                    |> builder.Render
-                                )
-                            ]
+                                    Dom.HtmlAttribute("href", "/counter")
+                                    Dom.BlazorObjAttribute("Match", NavLinkMatch.All)
+                                ] [
+                                    Dom.span [Dom.HtmlAttribute("class", "glyphicon glyphicon-home")] []
+                                    Dom.text "Counter"
+                                ]
                         ]
                         Dom.li [] [
                             Dom.comp<NavLink> [
-                                Dom.HtmlAttribute("href", "/fetchdata")
-                                Dom.BlazorObjAttribute("Match", NavLinkMatch.All)
-                                Dom.BlazorFragmentAttribute("ChildContent", fun builder ->
-                                    Dom.Fragment [
-                                        Dom.span [Dom.HtmlAttribute("class", "glyphicon glyphicon-home")] []
-                                        Dom.text "Fetch data"
-                                    ]
-                                    |> builder.Render
-                                )
-                            ]
+                                    Dom.HtmlAttribute("href", "/fetchdata")
+                                    Dom.BlazorObjAttribute("Match", NavLinkMatch.All)
+                                ] [
+                                    Dom.span [Dom.HtmlAttribute("class", "glyphicon glyphicon-home")] []
+                                    Dom.text "Fetch data"
+                                ]
                         ]
                     ]
                 ]
@@ -242,7 +232,6 @@ type NavMenu () =
         ]
         |> builder.Render
 *)
-
 
 
 type MainLayout () =
@@ -281,7 +270,7 @@ type MainLayout () =
         Dom.div [Dom.HtmlAttribute("class", "container-fluid")] [
             Dom.div [Dom.HtmlAttribute("class", "row")] [
                 Dom.div [Dom.HtmlAttribute("class", "col-sm-3")] [
-                    Dom.comp<NavMenu> []
+                    Dom.comp<NavMenu> [] []
                 ]
                 Dom.div [Dom.HtmlAttribute("class", "col-sm-9")] [
                     Dom.content this.Body
@@ -386,7 +375,7 @@ type Index () =
         Dom.Fragment [
             Dom.h1 [] [ Dom.text "Hello, world!" ]
             Dom.text "\n\nWelcome to your new app.\n\n"
-            Dom.comp<SurveyPrompt> [Dom.HtmlAttribute("title", "How is Blazor working for you?")]
+            Dom.comp<SurveyPrompt> [Dom.HtmlAttribute("title", "How is Blazor working for you?")] []
         ]
         |> builder.Render
 
@@ -593,7 +582,7 @@ type App() =
         builder.CloseComponent()
         builder.AddContent(3, "\n")
 *)
-        Dom.comp<Router> [Dom.BlazorObjAttribute("AppAssembly", box typeof<Marker>.Assembly)]
+        Dom.comp<Router> [Dom.BlazorObjAttribute("AppAssembly", box typeof<Marker>.Assembly)] []
         |> builder.Render
 
 

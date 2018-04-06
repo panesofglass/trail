@@ -13,13 +13,13 @@ module Dom =
 
     type Node =
         | Element of name:string * attrs:Attribute list * nodes:Node list
-        | Component of Type * attrs:Attribute list
+        | Component of Type * attrs:Attribute list * children:Node list
         | Content of RenderFragment
         | Text of text:string
         | Fragment of Node list
 
-    let comp<'T when 'T :> IComponent> attrs =
-        Component(typeof<'T>, attrs)
+    let comp<'T when 'T :> IComponent> attrs children =
+        Component(typeof<'T>, attrs, children)
 
     let el name attrs nodes = Element(name, attrs, nodes)
     let a attrs nodes = Element("a", attrs, nodes)
@@ -51,7 +51,6 @@ module Dom =
     let text content = Text content
     let textf format content = Text(Printf.sprintf format content)
     
-
 module RenderTree =
     open Dom
 
@@ -91,7 +90,7 @@ module RenderTree =
             match nodes with
             | [] -> closeElement builder next cont step
             | _ -> renderNodes builder nodes step (closeElement builder next cont)
-        | Component(ty, attrs) ->
+        | Component(ty, attrs, children) ->
             printfn "OpenComponent(%i, %s)" step (ty.Name)
             builder.OpenComponent(step, ty)
             step <- step + 1
@@ -100,6 +99,9 @@ module RenderTree =
                 | HtmlAttribute(name, value) ->
                     printfn "AddAttribute(%i, %s, %s)" step name value
                     builder.AddAttribute(step, name, value)
+                | BlazorFrameAttribute(frame) ->
+                    printfn "AddAttribute(%i, %A)" step frame
+                    builder.AddAttribute(step, frame)
                 | BlazorObjAttribute(name, value) ->
                     printfn "AddAttribute(%i, %s, %A)" step name value
                     builder.AddAttribute(step, name, value)
@@ -107,12 +109,15 @@ module RenderTree =
                     printfn "AddAttribute(%i, %s, %A)" step name value
                     builder.AddAttribute(step, name, (RenderFragment(value)))
                 step <- step + 1
-            printfn "CloseComponent()"
-            builder.CloseComponent()
-            printfn "AddContent(%i, \\n)" step
-            builder.AddContent(step, "\n")
-            step <- step + 1
-            renderNodes builder next step cont
+            match children with
+            | [] -> closeComponent builder next cont step
+            | _ ->
+                // TODO: recurse to apply the correct sequence value.
+                let renderFragment = RenderFragment(fun builder2 -> render builder2 (Fragment children))
+                printfn "AddContent(%i, ChildContent, %A)" step renderFragment
+                builder.AddAttribute(step, "ChildContent", renderFragment)
+                step <- step + 1
+                closeComponent builder next cont step
         | Content(renderFragment) ->
             printfn "AddContent(%i, %A)" step renderFragment
             builder.AddContent(step, renderFragment)
@@ -123,13 +128,19 @@ module RenderTree =
             renderNodes builder next (step + 1) cont
         | Fragment(nodes) ->
             renderNodes builder nodes step cont
+            // need to wrap the next in a callback that then calls cont? (fun sequence -> renderNodes builder next sequence cont)
     and private closeElement (builder:RenderTree.RenderTreeBuilder) next cont sequence =
         printfn "CloseElement()"
         builder.CloseElement()
         printfn "AddContent(%i, \\n)" sequence
         builder.AddContent(sequence, "\n")
         renderNodes builder next (sequence + 1) cont
-    
+    and private closeComponent (builder:RenderTree.RenderTreeBuilder) next cont sequence =
+        printfn "CloseComponent()"
+        builder.CloseComponent()
+        printfn "AddContent(%i, \\n)" sequence
+        builder.AddContent(sequence, "\n")
+        renderNodes builder next (sequence + 1) cont
 
 module Extensions =
     type Microsoft.AspNetCore.Blazor.RenderTree.RenderTreeBuilder with
