@@ -59,6 +59,7 @@ open Microsoft.AspNetCore.Blazor.Components
 open Microsoft.AspNetCore.Blazor.Layouts
 open Microsoft.AspNetCore.Blazor.Routing
 open FSharp.Blazor
+open FSharp.Blazor.Extensions
 
 type NavMenu () =
     inherit BlazorComponent()
@@ -178,6 +179,7 @@ type MainLayout () =
 
     override this.BuildRenderTree(builder) =
         base.BuildRenderTree(builder)
+        (*
         builder.AddContent(0, "\n")
         builder.OpenElement(1, "div")
         builder.AddAttribute(2, "class", "container-fluid")
@@ -204,6 +206,18 @@ type MainLayout () =
         builder.AddContent(19, "\n")
         builder.CloseElement()
         builder.AddContent(20, "\n\n")
+        *)
+        Dom.el "div" ["class", "container-fluid"] [
+            Dom.el "div" ["class", "row"] [
+                Dom.el "div" ["class", "col-sm-3"] [
+                    Dom.comp<NavMenu> []
+                ]
+                Dom.el "div" ["class", "col-sm-9"] [
+                    Dom.content this.Body
+                ]
+            ]
+        ]
+        |> builder.Render
 
     member val Body : RenderFragment = Unchecked.defaultof<RenderFragment> with get, set
 
@@ -240,18 +254,16 @@ type SurveyPrompt () =
         builder.CloseElement()
         builder.AddContent(17, "\n\n")
         *)
-        Dom.Fragment [
-            Dom.el "div" ["class", "alert alert-survey"; "role", "alert"] [
-                Dom.el "span" ["class", "glyphicon glyphicon-ok-circle"; "aria-hidden", "true"] []
-                Dom.el "strong" [] [Dom.text this.Title]
-                Dom.text "Please take our "
-                Dom.el "a" ["target", "_blank"; "class", "alert-link"; "href", "https://go.microsoft.com/fwlink/?linkid=870381"] [
-                    Dom.text "brief survey"
-                ]
-                Dom.text " and tell us what you think."
+        Dom.el "div" ["class", "alert alert-survey"; "role", "alert"] [
+            Dom.el "span" ["class", "glyphicon glyphicon-ok-circle"; "aria-hidden", "true"] []
+            Dom.el "strong" [] [Dom.text this.Title]
+            Dom.text "Please take our "
+            Dom.el "a" ["target", "_blank"; "class", "alert-link"; "href", "https://go.microsoft.com/fwlink/?linkid=870381"] [
+                Dom.text "brief survey"
             ]
+            Dom.text " and tell us what you think."
         ]
-        |> RenderTree.build builder
+        |> builder.Render
 
     // This is to demonstrate how a parent component can supply parameters
     member val Title : string = Unchecked.defaultof<string> with get, set
@@ -270,6 +282,7 @@ open Microsoft.AspNetCore.Blazor.Routing
 open BlazorApp1
 open BlazorApp1.Shared
 open FSharp.Blazor
+open FSharp.Blazor.Extensions
 
 (*
 // NOTE: _ViewImports.cshtml appear to be required in the BlazorApp.
@@ -302,7 +315,7 @@ type Index () =
             Dom.text "\n\nWelcome to your new app.\n\n"
             Dom.comp<SurveyPrompt> [ "title", "How is Blazor working for you?" ]
         ]
-        |> RenderTree.build builder
+        |> builder.Render
 
 (*
 [<LayoutAttribute(typeof<MainLayout>)>]

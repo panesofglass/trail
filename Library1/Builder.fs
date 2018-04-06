@@ -14,32 +14,38 @@ module Dom =
     type Node =
         | Element of name:string * attrs:Attribute list * nodes:Node list
         | Component of Type * attrs:Attribute list
-        | Content of text:string
-    
-    type Document = Fragment of Node list
+        | Content of RenderFragment
+        | Text of text:string
+        | Fragment of Node list
 
     let comp<'T when 'T :> IComponent> attrs =
         Component(typeof<'T>, attrs |> List.map Attribute)
 
     let el name attrs nodes =
         Element(name, attrs |> List.map Attribute, nodes)
+
+    let content renderFragment =
+        Content renderFragment
     
     let text content =
-        Content content
+        Text content
     
 
 module RenderTree =
     open Dom
 
-    let rec build builder (Fragment nodes) =
-        buildNodes builder nodes 0 ignore
-    and private buildNodes (builder:RenderTree.RenderTreeBuilder) (nodes:Node list) sequence cont =
+    let rec render builder node =
+        match node with
+        | Fragment nodes ->
+            renderNodes builder nodes 0 ignore
+        | _ -> renderNode builder [] node 0 ignore
+    and private renderNodes (builder:RenderTree.RenderTreeBuilder) (nodes:Node list) sequence cont =
         match nodes with
         | [] ->
             cont sequence
         | node::nodes ->
-            buildNode builder nodes node sequence cont
-    and private buildNode (builder:RenderTree.RenderTreeBuilder) next node sequence cont =
+            renderNode builder nodes node sequence cont
+    and private renderNode (builder:RenderTree.RenderTreeBuilder) next node sequence cont =
         let mutable step = sequence
         match node with
         | Element(name, attrs, nodes) ->
@@ -52,7 +58,7 @@ module RenderTree =
                 step <- step + 1
             match nodes with
             | [] -> closeElement builder next cont step
-            | _ -> buildNodes builder nodes step (closeElement builder next cont)
+            | _ -> renderNodes builder nodes step (closeElement builder next cont)
         | Component(ty, attrs) ->
             printfn "OpenComponent(%i, %s)" step (ty.Name)
             builder.OpenComponent(step, ty)
@@ -66,14 +72,26 @@ module RenderTree =
             printfn "AddContent(%i, \\n)" step
             builder.AddContent(step, "\n")
             step <- step + 1
-            buildNodes builder next step cont
-        | Content(text) ->
+            renderNodes builder next step cont
+        | Content(renderFragment) ->
+            printfn "AddContent(%i, %A)" step renderFragment
+            builder.AddContent(step, renderFragment)
+            renderNodes builder next (step + 1) cont
+        | Text(text) ->
             printfn "AddContent(%i, %s)" step text
             builder.AddContent(step, text)
-            buildNodes builder next (step + 1) cont
+            renderNodes builder next (step + 1) cont
+        | Fragment(nodes) ->
+            renderNodes builder nodes step cont
     and private closeElement (builder:RenderTree.RenderTreeBuilder) next cont sequence =
         printfn "CloseElement()"
         builder.CloseElement()
         printfn "AddContent(%i, \\n)" sequence
         builder.AddContent(sequence, "\n")
-        buildNodes builder next (sequence + 1) cont
+        renderNodes builder next (sequence + 1) cont
+    
+
+module Extensions =
+    type Microsoft.AspNetCore.Blazor.RenderTree.RenderTreeBuilder with
+        /// Renders a Dom.Document.
+        member this.Render(document) = RenderTree.render this document
