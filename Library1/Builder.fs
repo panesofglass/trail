@@ -20,32 +20,35 @@ module Dom =
     let comp<'T when 'T :> IComponent> attrs =
         Component(typeof<'T>, attrs)
 
-    let el name attrs nodes =
-        Element(name, attrs, nodes)
-    
-    let a attrs nodes =
-        Element("a", attrs, nodes)
-    
-    let div attrs nodes =
-        Element("div", attrs, nodes)
+    let el name attrs nodes = Element(name, attrs, nodes)
+    let a attrs nodes = Element("a", attrs, nodes)
+    let button attrs nodes = Element("button", attrs, nodes)
+    let div attrs nodes = Element("div", attrs, nodes)
+    let em attrs nodes = Element("em", attrs, nodes)
+    let h1 attrs nodes = Element("h1", attrs, nodes)
+    let h2 attrs nodes = Element("h2", attrs, nodes)
+    let h3 attrs nodes = Element("h3", attrs, nodes)
+    let h4 attrs nodes = Element("h4", attrs, nodes)
+    let h5 attrs nodes = Element("h5", attrs, nodes)
+    let p attrs nodes = Element("p", attrs, nodes)
+    let span attrs nodes = Element("span", attrs, nodes)
+    let strong attrs nodes = Element("strong", attrs, nodes)
 
-    let em attrs nodes =
-        Element("em", attrs, nodes)
-    
-    let h1 attrs nodes =
-        Element("h1", attrs, nodes)
-    
-    let span attrs nodes =
-        Element("span", attrs, nodes)
+    let ul attrs nodes = Element("ul", attrs, nodes)
+    let li attrs nodes = Element("li", attrs, nodes)
 
-    let strong attrs nodes =
-        Element("strong", attrs, nodes)
+    let table attrs nodes = Element("table", attrs, nodes)
+    let thead attrs nodes = Element("thead", attrs, nodes)
+    let tbody attrs nodes = Element("tbody", attrs, nodes)
+    let tfoot attrs nodes = Element("tfoot", attrs, nodes)
+    let tr attrs nodes = Element("tr", attrs, nodes)
+    let th attrs nodes = Element("th", attrs, nodes)
+    let td attrs nodes = Element("td", attrs, nodes)
 
-    let content renderFragment =
-        Content renderFragment
+    let content renderFragment = Content renderFragment
     
-    let text content =
-        Text content
+    let text content = Text content
+    let textf format content = Text(Printf.sprintf format content)
     
 
 module RenderTree =
