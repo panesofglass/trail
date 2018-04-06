@@ -256,14 +256,14 @@ open BlazorApp1.Shared
 open FSharp.Blazor
 
 // NOTE: _ViewImports.cshtml appear to be required in the BlazorApp.
-[<Microsoft.AspNetCore.Blazor.Layouts.LayoutAttribute(typeof<MainLayout>)>]
+[<LayoutAttribute(typeof<MainLayout>)>]
 type _ViewImports () =
     inherit Microsoft.AspNetCore.Blazor.Components.BlazorComponent()
     override this.BuildRenderTree(builder) =
         base.BuildRenderTree(builder)
 
-[<Microsoft.AspNetCore.Blazor.Layouts.LayoutAttribute(typeof<MainLayout>)>]
-[<Microsoft.AspNetCore.Blazor.Components.RouteAttribute("/")>]
+[<LayoutAttribute(typeof<MainLayout>)>]
+[<RouteAttribute("/")>]
 type Index () =
     inherit Microsoft.AspNetCore.Blazor.Components.BlazorComponent()
     override this.BuildRenderTree(builder) =
@@ -318,9 +318,8 @@ type Counter () =
         currentCount = Library1.Counter.incrementBy(1, currentCount)
 *)
 
-(*
-[<Microsoft.AspNetCore.Blazor.Layouts.LayoutAttribute(typeof<MainLayout>)>]
-[<Microsoft.AspNetCore.Blazor.Components.RouteAttribute("/fetchdata")>]
+[<LayoutAttribute(typeof<MainLayout>)>]
+[<Route("/fetchdata")>]
 type FetchData () =
     inherit Microsoft.AspNetCore.Blazor.Components.BlazorComponent()
     
@@ -412,8 +411,5 @@ type FetchData () =
         }
         |> Async.StartAsTask :> System.Threading.Tasks.Task
 
-    // NOTE: F# does not appear to support the global attribute target.
-    // See https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/attributes#remarks
-    [<global::Microsoft.AspNetCore.Blazor.Components.InjectAttribute>]
+    [<Inject>]
     member val private Http : HttpClient = Unchecked.defaultof<HttpClient> with get, set
-*)
