@@ -447,6 +447,7 @@ type FetchData () =
 
     override this.BuildRenderTree(builder) =
         base.BuildRenderTree(builder)
+(*
         builder.AddContent(0, "\n")
         builder.OpenElement(1, "h1")
         builder.AddContent(2, "Weather forecast")
@@ -523,7 +524,7 @@ type FetchData () =
             builder.CloseElement()
             builder.AddContent(54, "\n")
         builder.AddContent(55, "\n")
-(*
+*)
         // This appears to be triggering endless loops
         Dom.Fragment [
             yield Dom.h1 [] [Dom.text "Weather forecast"]
@@ -554,7 +555,6 @@ type FetchData () =
                 ]
         ]
         |> builder.Render
-*)
 
     override this.OnInitAsync() =
         async {
