@@ -174,7 +174,7 @@ Note that the attribute name is lowercase. This is an area where I think we can 
 	- [ ] [Realworld.io](https://realworld.io/) [sample](https://github.com/panesofglass/issues/4)
 	- [ ] [Realworld.io](https://realworld.io/) [sample with Flatware](https://github.com/panesofglass/issues/4)
 - [ ] [Extend and improve markup helper DSL](https://github.com/panesofglass/issues/5)
-- [ ] Test and optimize performance
+- [ ] [Test and optimize performance](https://github.com/panesofglass/trail/issues/6)
 - [ ] Keep up with ASP.NET Blazor team
 - [ ] All F# Blazor app - doesn't seem possible yet.
 
