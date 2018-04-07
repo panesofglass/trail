@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Controllers\SampleDataController.fs" />
+    <Compile Include="Startup.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="0.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BlazorHosted1.ClientLib\BlazorHosted1.ClientLib.fsproj" />
+    <ProjectReference Include="..\BlazorHosted1.Client\BlazorHosted1.Client.csproj" />
+    <ProjectReference Include="..\BlazorHosted1.Shared\BlazorHosted1.Shared.fsproj" />
+  </ItemGroup>
+
+
+</Project>
