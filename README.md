@@ -11,13 +11,13 @@
 * F# running in the browser on WebAssembly!
 * Domain-specific language for Blazor components similar to those provided by [Fable](http://fable.io/) and [WebSharper](http://websharper.com/).
 * `Trail.Component` type to make it easier to create components with the DSL.
-* [Sample application](https://github.com/panesofglass/trail/tree/master/sample) demonstrating the capabilities based on the stand-alone Blazor template.
-* Can write nearly the entire app in F#! All you need is a `csproj` for the [`Program.cs` and assets](https://github.com/panesofglass/trail/tree/master/sample/BlazorApp1).
+* [Sample application](https://github.com/panesofglass/trail/tree/master/sample/standalone) demonstrating the capabilities based on the stand-alone Blazor template.
+* Can write nearly the entire app in F#! All you need is a `csproj` for the [`Program.cs` and assets](https://github.com/panesofglass/trail/tree/master/sample/standalone/BlazorApp1).
 
 ## Getting Started
 
 1. Follow the instructions for [getting started with Blazor](https://github.com/aspnet/Blazor#getting-started).
-2. Clone this repository and run `dotnet run --project sample/BlazorApp1` or run from the latest Visual Studio 2017 Preview.
+2. Clone this repository and run `dotnet run --project sample/standalone/BlazorApp1` or run from the latest Visual Studio 2017 Preview.
 3. You can also create a new Blazor project,
 4. Add an F# library project,
 5. Add the following libraries to the F# library project:
@@ -110,7 +110,7 @@ Finally, you can see Trail already provides several helper elements, e.g. `h1`, 
 
 ### Shared
 
-There are several shared components, including the navigation menu, the main layout, and the survey. You can find these in the `Shared.fs` file in the [sample folder](https://github.com/panesofglass/trail/blob/master/sample/Library1/Shared.fs).
+There are several shared components, including the navigation menu, the main layout, and the survey. You can find these in the `Shared.fs` file in the [sample folder](https://github.com/panesofglass/trail/blob/master/sample/standalone/Library1/Shared.fs).
 
 ``` fsharp
 type MainLayout () =

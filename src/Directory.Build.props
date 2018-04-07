@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-	<Title>Trail</Title>
-    <Version>0.0.1-alpha2</Version>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Version>0.0.1</Version>
     <Authors>Ryan Riley</Authors>
     <Summary>Blazor rendering with F#.</Summary>
     <Description>Blazor rendering with F#.</Description>
