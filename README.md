@@ -2,6 +2,10 @@
 
 [Blazor](https://github.com/aspnet/Blazor) rendering with [F#](http://fsharp.org/).
 
+[![NuGet Status](http://img.shields.io/nuget/v/trail.svg?style=flat)](https://www.nuget.org/packages/trail/)
+[![Issue Stats](http://issuestats.com/github/panesofglass/trail/badge/issue)](http://issuestats.com/github/panesofglass/trail)
+[![PR Stats](http://issuestats.com/github/panesofglass/trail/badge/pr)](http://issuestats.com/github/panesofglass/trail)
+
 ## Features
 
 * F# running in the browser on WebAssembly!
@@ -169,4 +173,4 @@ Note that the attribute name is lowercase. This is an area where I think we can 
 
 Trail is very early and building on top of Blazor, which is also very early. Expect many breaking changes to come.
 I would love to have your help. If you have ideas, run into issues, or want to tweak or extend the DSL, please
-submit [issues](https://github.com/panesofglass/trail/issues) or [pull requests](https://github.com/panesofglass/pulls).
+submit [issues](https://github.com/panesofglass/trail/issues) or [pull requests](https://github.com/panesofglass/trail/pulls).
