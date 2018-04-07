@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Compile Include="Builder.fs" />
-    <Compile Include="Library.fs" />
   </ItemGroup>
 
   <ItemGroup>
