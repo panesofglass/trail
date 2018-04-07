@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Builder.fs" />
+    <Compile Include="Trail.fs" />
   </ItemGroup>
 
   <ItemGroup>
