@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>0.0.1</Version>
+    <Summary>Blazor rendering with F# and state management with BlazorRedux.</Summary>
+    <Description>Blazor rendering with F# and state management with BlazorRedux.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Trail.BlazorRedux.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazor-Redux" Version="0.0.*" />
+    <PackageReference Include="Trail" Version="0.0.*" />
+  </ItemGroup>
+
+</Project>
