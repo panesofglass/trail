@@ -166,10 +166,15 @@ Note that the attribute name is lowercase. This is an area where I think we can 
 
 ## Roadmap
 
-1. More documentation, samples, and tutorials!
-2. Test and optimize performance
-3. Keep up with ASP.NET Blazor team
-4. All F# Blazor app - doesn't seem possible yet.
+- [ ] More documentation, samples, and tutorials!
+	- [x] Sample with [Flatware](https://github.com/torhovland/Flatware)
+	- [ ] Full-stack sample
+	- [ ] Full-stack sample with Flatware
+	- [ ] [Realworld.io](https://realworld.io/) sample
+	- [ ] [Realworld.io](https://realworld.io/) sample with Flatware
+- [ ] Test and optimize performance
+- [ ] Keep up with ASP.NET Blazor team
+- [ ] All F# Blazor app - doesn't seem possible yet.
 
 ## Contributing
 
