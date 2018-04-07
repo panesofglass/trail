@@ -48,6 +48,14 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "BlazorHosted1.Server", "sam
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorHosted1.ServerCSharp", "sample\fullstack\BlazorHosted1.ServerCSharp\BlazorHosted1.ServerCSharp.csproj", "{D1C009AF-FC18-4AC0-8B63-BA72ADF3E467}"
 EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Trail.BlazorRedux", "src\Trail.BlazorRedux\Trail.BlazorRedux.fsproj", "{AFFD68BD-24DC-45D8-AE58-A4F5EC61D997}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "blazor-redux-standalone", "blazor-redux-standalone", "{3A817E72-CB0B-4D10-8C10-5DEFE1DD598D}"
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "BlazorReduxLib", "sample\blazor-redux-standalone\BlazorReduxLib\BlazorReduxLib.fsproj", "{392F2FE9-3403-49AD-B01A-F96A1BBDFD96}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorReduxApp", "sample\blazor-redux-standalone\BlazorReduxApp\BlazorReduxApp.csproj", "{15FCC8DD-5608-4E0E-999E-D81E8C031942}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -102,6 +110,18 @@ Global
 		{D1C009AF-FC18-4AC0-8B63-BA72ADF3E467}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1C009AF-FC18-4AC0-8B63-BA72ADF3E467}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1C009AF-FC18-4AC0-8B63-BA72ADF3E467}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFFD68BD-24DC-45D8-AE58-A4F5EC61D997}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFFD68BD-24DC-45D8-AE58-A4F5EC61D997}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFFD68BD-24DC-45D8-AE58-A4F5EC61D997}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFFD68BD-24DC-45D8-AE58-A4F5EC61D997}.Release|Any CPU.Build.0 = Release|Any CPU
+		{392F2FE9-3403-49AD-B01A-F96A1BBDFD96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{392F2FE9-3403-49AD-B01A-F96A1BBDFD96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{392F2FE9-3403-49AD-B01A-F96A1BBDFD96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{392F2FE9-3403-49AD-B01A-F96A1BBDFD96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15FCC8DD-5608-4E0E-999E-D81E8C031942}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15FCC8DD-5608-4E0E-999E-D81E8C031942}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15FCC8DD-5608-4E0E-999E-D81E8C031942}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15FCC8DD-5608-4E0E-999E-D81E8C031942}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -122,6 +142,10 @@ Global
 		{A48C3F5D-CACF-4506-A7B4-79C7B8BA2819} = {4286004B-4067-4136-9A0E-037B2BA67540}
 		{005007C0-ED57-41E1-9AE1-E0CE685765EC} = {4286004B-4067-4136-9A0E-037B2BA67540}
 		{D1C009AF-FC18-4AC0-8B63-BA72ADF3E467} = {4286004B-4067-4136-9A0E-037B2BA67540}
+		{AFFD68BD-24DC-45D8-AE58-A4F5EC61D997} = {7DC7FD7F-318A-41E6-8913-CBB973E03657}
+		{3A817E72-CB0B-4D10-8C10-5DEFE1DD598D} = {E7597390-E323-48F6-8377-CEA51FB27734}
+		{392F2FE9-3403-49AD-B01A-F96A1BBDFD96} = {3A817E72-CB0B-4D10-8C10-5DEFE1DD598D}
+		{15FCC8DD-5608-4E0E-999E-D81E8C031942} = {3A817E72-CB0B-4D10-8C10-5DEFE1DD598D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {108ADC24-AA04-4A13-9AEC-2BF801A7FED7}

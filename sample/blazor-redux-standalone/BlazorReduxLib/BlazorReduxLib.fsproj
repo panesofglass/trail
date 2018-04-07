@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Library.fs" />
+    <Compile Include="Shared.fs" />
+    <Compile Include="Index.fs" />
+    <Compile Include="Counter.fs" />
+    <Compile Include="FetchData.fs" />
+    <Compile Include="App.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazor-Redux" Version="0.0.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Browser" Version="0.1.0" PrivateAssets="all" />
+    <PackageReference Include="TaskBuilder.fs" Version="1.*" />
+    <PackageReference Include="Trail" Version="0.0.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Trail.BlazorRedux\Trail.BlazorRedux.fsproj" />
+  </ItemGroup>
+
+</Project>
