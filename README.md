@@ -52,13 +52,11 @@ open BlazorApp1
 open BlazorApp1.Shared
 open Trail
 
-type Marker = class end
-
 type App() =
     inherit Trail.Component()
 
     override __.Render() =
-        Dom.comp<Router> [Dom.BlazorObjAttribute("AppAssembly", box typeof<Marker>.Assembly)] []
+        Dom.router<Router> typeof<App>.Assembly
 ```
 
 A `Trail.Component` is an abstract class inheriting from a `BlazorComponent`.
