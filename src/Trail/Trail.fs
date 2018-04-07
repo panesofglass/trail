@@ -100,8 +100,9 @@ module RenderTree =
             match children with
             | [] -> closeElement next (fun (sequence', rest) -> cont(sequence', instructions @ rest)) step
             | _ ->
-                // TODO: Correctly nest closeElement with the rest of the instructions.
-                buildNodes children step (fun (sequence', rest) -> closeElement next (fun (sequence'', rest') -> cont(sequence'', instructions @ rest')) sequence')
+                // TODO: Correctly nest closeElement within the continuation.
+                let sequence', children = buildNodes children step id
+                closeElement next (fun (sequence'', rest) -> cont(sequence'', instructions @ children @ rest)) sequence'
 
         | Component(ty, attrs, children) ->
             let instructions =
@@ -121,9 +122,10 @@ module RenderTree =
             match children with
             | [] -> closeComponent next (fun (sequence', rest) -> cont(sequence', instructions @ rest)) step
             | _ ->
-                // TODO: build the RenderFragment delegate with instructions for the children, maintaining the sequence'.
-                // NOTE: this should work a lot like, and may be able to leverage, Fragment. See TODO.
-                closeComponent next (fun (sequence', rest) -> cont(sequence', instructions @ rest)) step
+                // TODO: Correctly nest createing the fragment attribute and closing the component within the continuation.
+                let sequence', children = buildNodes children (step + 1) id
+                let fragment = AddBlazorFragmentAttribute(step, children)
+                closeComponent next (fun (sequence'', rest) -> cont(sequence'', instructions @ [fragment] @ rest)) sequence'
 
         | Content(fragment) ->
             buildNodes next (step + 1) (fun (sequence', rest) -> cont(sequence', [AddRenderFragmentContent(step, fragment)] @ rest))
@@ -132,8 +134,9 @@ module RenderTree =
             buildNodes next (step + 1) (fun (sequence', rest) -> cont(sequence', [AddTextContent(step, textContent)] @ rest))
 
         | Fragment(nodes) ->
-            // TODO: need to wrap the next in a callback that then calls cont? (fun sequence -> buildNodes builder next sequence cont)
-            buildNodes nodes step cont
+            // TODO: Correctly nest building fragment nodes within the continuation.
+            let sequence', instructions = buildNodes nodes step id
+            buildNodes next sequence' (fun (sequence'', rest) -> cont(sequence'', instructions @ rest))
 
     and private closeElement next cont sequence =
         let instructions =

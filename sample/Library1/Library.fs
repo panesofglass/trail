@@ -67,6 +67,7 @@ type NavMenu () =
     override this.BuildRenderTree(builder) =
         base.BuildRenderTree(builder)
 
+(*
         builder.OpenElement(0, "div")
         builder.AddAttribute(1, "class", "main-nav")
         builder.AddContent(2, "\n    ")
@@ -173,8 +174,8 @@ type NavMenu () =
         builder.AddContent(80, "\n")
         builder.CloseElement()
         builder.AddContent(81, "\n")
+*)
 
-(*
         // This is triggering endless loops.
         Dom.div [Dom.HtmlAttribute("class", "main-nav")] [
             Dom.div [Dom.HtmlAttribute("class", "navbar navbar-inverse")] [
@@ -231,7 +232,6 @@ type NavMenu () =
             ]
         ]
         |> builder.Render
-*)
 
 
 type MainLayout () =
