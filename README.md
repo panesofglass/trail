@@ -167,14 +167,15 @@ Note that the attribute name is lowercase. This is an area where I think we can 
 ## Roadmap
 
 - [ ] More documentation, samples, and tutorials!
-	- [x] [Flatware extension library](https://github.com/panesofglass/issues/1)
+	- [x] [Flatware extension library](https://github.com/panesofglass/trail/issues/1)
 	- [x] Sample with [Flatware](https://github.com/torhovland/Flatware)
-	- [ ] [Full-stack sample](https://github.com/panesofglass/issues/2)
-	- [ ] [Full-stack sample with Flatware](https://github.com/panesofglass/issues/2)
-	- [ ] [Realworld.io](https://realworld.io/) [sample](https://github.com/panesofglass/issues/4)
-	- [ ] [Realworld.io](https://realworld.io/) [sample with Flatware](https://github.com/panesofglass/issues/4)
-- [ ] [Extend and improve markup helper DSL](https://github.com/panesofglass/issues/5)
+	- [x] [Full-stack sample](https://github.com/panesofglass/trail/issues/2)
+	- [ ] [Full-stack sample with Flatware](https://github.com/panesofglass/trail/issues/2)
+	- [ ] [Realworld.io](https://realworld.io/) [sample](https://github.com/panesofglass/trail/issues/4)
+	- [ ] [Realworld.io](https://realworld.io/) [sample with Flatware](https://github.com/panesofglass/trail/issues/4)
+- [ ] [Extend and improve markup helper DSL](https://github.com/panesofglass/trail/issues/5)
 - [ ] [Test and optimize performance](https://github.com/panesofglass/trail/issues/6)
+- [ ] [Create dotnet new templates](https://github.com/panesofglass/trail/issues/7)
 - [ ] Keep up with ASP.NET Blazor team
 - [ ] All F# Blazor app - doesn't seem possible yet.
 
