@@ -16,13 +16,11 @@ open BlazorApp1
 open BlazorApp1.Shared
 open Library1
 
-type Marker = class end
-
 type App() =
     inherit MyAppComponent()
 
     override __.Render() =
-        Dom.comp<Router> [Dom.BlazorObjAttribute("AppAssembly", box typeof<Marker>.Assembly)] []
+        Dom.router<Router> typeof<App>.Assembly
 
     override this.OnInitAsync() =
         this.DispatchAsync(MyMsg.LoadWeather) :> Task

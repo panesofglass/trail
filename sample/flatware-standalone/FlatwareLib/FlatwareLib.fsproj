@@ -16,6 +16,7 @@
   <ItemGroup>
     <PackageReference Include="Flatware" Version="0.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor.Browser" Version="0.1.0" PrivateAssets="all" />
+    <PackageReference Include="Trail" Version="0.0.2" />
   </ItemGroup>
 
   <ItemGroup>
