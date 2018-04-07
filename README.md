@@ -12,7 +12,7 @@
 * Domain-specific language for Blazor components similar to those provided by [Fable](http://fable.io/) and [WebSharper](http://websharper.com/).
 * `Trail.Component` type to make it easier to create components with the DSL.
 * [Sample application](https://github.com/panesofglass/trail/tree/master/sample) demonstrating the capabilities based on the stand-alone Blazor template.
-* Can write nearly the entire app in F#! All you need is a `csproj` for the `Program.cs` and assets.
+* Can write nearly the entire app in F#! All you need is a `csproj` for the [`Program.cs` and assets](https://github.com/panesofglass/trail/tree/master/sample/BlazorApp1).
 
 ## Getting Started
 
