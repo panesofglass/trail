@@ -178,22 +178,14 @@ module RenderTree =
             | AddHtmlAttribute(sequence, name, value) ->
                 builder.AddAttribute(sequence, name, value)
 
-module Extensions =
+[<AbstractClass>]
+type Component () =
+    inherit BlazorComponent()
+    
+    abstract Render : unit -> Dom.Node
 
-    type Dom.Node with
-
-        /// Compiles a Dom.Node into an AST tree.
-        member this.Compile() =
-            RenderTree.build this
-
-    type Microsoft.AspNetCore.Blazor.RenderTree.RenderTreeBuilder with
-        
-        /// Renders the compiled Dom.Node instructions.
-        member this.Render(instructions) =
-            instructions |> RenderTree.render this
-
-        /// Renders a Dom.Node.
-        member this.Render(document) =
-            document
-            |> RenderTree.build
-            |> RenderTree.render this
+    override this.BuildRenderTree(builder) =
+        base.BuildRenderTree(builder)
+        this.Render()
+        |> RenderTree.build
+        |> RenderTree.render builder

@@ -6,6 +6,11 @@
 
   <ItemGroup>
     <Compile Include="Library.fs" />
+    <Compile Include="Shared.fs" />
+    <Compile Include="Index.fs" />
+    <Compile Include="Counter.fs" />
+    <Compile Include="FetchData.fs" />
+    <Compile Include="App.fs" />
   </ItemGroup>
 
   <ItemGroup>
