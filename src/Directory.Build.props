@@ -2,12 +2,12 @@
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
 	<Title>Trail</Title>
-    <Version>0.0.1-alpha1</Version>
+    <Version>0.0.1-alpha2</Version>
     <Authors>Ryan Riley</Authors>
     <Summary>Blazor rendering with F#.</Summary>
     <Description>Blazor rendering with F#.</Description>
     <PackageLicenseUrl>https://github.com/panesofglass/trail/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/panesofgalss/trail</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/panesofglass/trail</PackageProjectUrl>
     <PackageTags>F#;FSharp;Blazor;aspnet</PackageTags>
     <RepositoryUrl>https://github.com/panesofglass/trail</RepositoryUrl>
   </PropertyGroup>
