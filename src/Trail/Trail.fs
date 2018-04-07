@@ -3,6 +3,7 @@ namespace Trail
 open System
 open Microsoft.AspNetCore.Blazor
 open Microsoft.AspNetCore.Blazor.Components
+open Microsoft.AspNetCore.Blazor.Routing
 
 module Dom =
     type Attribute =
@@ -19,6 +20,9 @@ module Dom =
 
     let comp<'T when 'T :> IComponent> attrs children =
         Component(typeof<'T>, attrs, children)
+
+    let router<'T when 'T :> Router> (assembly:Reflection.Assembly) =
+        Component(typeof<'T>, [BlazorObjAttribute("AppAssembly", box assembly)], [])
 
     let el name attrs children = Element(name, attrs, children)
     let a attrs children = Element("a", attrs, children)
