@@ -5,12 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Builder.fs" />
     <Compile Include="Library.fs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Blazor.Browser" Version="0.1.0" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Trail\Trail.fsproj" />
   </ItemGroup>
 
 </Project>
