@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Trail.BlazorRedux\Trail.BlazorRedux.fsproj" />
     <ProjectReference Include="..\BlazorReduxLib\BlazorReduxLib.fsproj" />
   </ItemGroup>
 
