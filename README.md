@@ -167,8 +167,9 @@ Note that the attribute name is lowercase. This is an area where I think we can 
 - [ ] More documentation, samples, and tutorials!
 	- [x] [Flatware extension library](https://github.com/panesofglass/trail/issues/1)
 	- [x] Sample with [Flatware](https://github.com/torhovland/Flatware)
+	- [x] Sample with [Blazor-Redux](https://github.com/torhovland/blazor-redux)
 	- [x] [Full-stack sample](https://github.com/panesofglass/trail/issues/2)
-	- [ ] [Full-stack sample with Flatware](https://github.com/panesofglass/trail/issues/2)
+	- [ ] [Full-stack sample with Blazor-Redux](https://github.com/panesofglass/trail/issues/2)
 	- [ ] [Realworld.io](https://realworld.io/) [sample](https://github.com/panesofglass/trail/issues/4)
 	- [ ] [Realworld.io](https://realworld.io/) [sample with Flatware](https://github.com/panesofglass/trail/issues/4)
 - [ ] [Extend and improve markup helper DSL](https://github.com/panesofglass/trail/issues/5)
