@@ -8,11 +8,11 @@
 
 ## Packages
 
-| Package | Downloads |
-| :-----: | :-------: |
-| [![NuGet Status](http://img.shields.io/nuget/v/Trail.svg?style=flat)](https://www.nuget.org/packages/Trail/) | ![NuGet Downloads](https://img.shields.io/nuget/dt/Trail.svg?style=flat) |
-| [![NuGet Status](http://img.shields.io/nuget/v/Trail.BlazorRedux.svg?style=flat)](https://www.nuget.org/packages/Trail.BlazorRedux/) | ![NuGet Downloads](https://img.shields.io/nuget/dt/Trail.BlazorRedux.svg?style=flat) |
-| [![NuGet Status](http://img.shields.io/nuget/v/Trail.Flatware.svg?style=flat)](https://www.nuget.org/packages/Trail.Flatware/) | ![NuGet Downloads](https://img.shields.io/nuget/dt/Trail.Flatware.svg?style=flat) |
+| Package | NuGet | Downloads |
+| :------ | :-----: | :-------: |
+| Trail | [![NuGet Status](http://img.shields.io/nuget/v/Trail.svg?style=flat)](https://www.nuget.org/packages/Trail/) | ![NuGet Downloads](https://img.shields.io/nuget/dt/Trail.svg?style=flat) |
+| Trail.BlazorRedux | [![NuGet Status](http://img.shields.io/nuget/v/Trail.BlazorRedux.svg?style=flat)](https://www.nuget.org/packages/Trail.BlazorRedux/) | ![NuGet Downloads](https://img.shields.io/nuget/dt/Trail.BlazorRedux.svg?style=flat) |
+| Trail.Flatware | [![NuGet Status](http://img.shields.io/nuget/v/Trail.Flatware.svg?style=flat)](https://www.nuget.org/packages/Trail.Flatware/) | ![NuGet Downloads](https://img.shields.io/nuget/dt/Trail.Flatware.svg?style=flat) |
 
 ## Features
 
