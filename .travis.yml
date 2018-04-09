@@ -34,6 +34,7 @@ script:
   - dotnet build src/Trail --configuration Release
   - dotnet build src/Trail.Flatware --configuration Release
   - dotnet build src/Trail.BlazorRedux --configuration Release
+  - dotnet restore test/Trail.Tests
   - dotnet test test/Trail.Tests
   - dotnet pack src/Trail --configuration Release -o $pwd/bin
   - dotnet pack src/Trail.Flatware --configuration Release -o $pwd/bin
