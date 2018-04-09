@@ -26,4 +26,13 @@ install:
   - curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel Current --version latest --install-dir "$DOTNET_INSTALL_DIR"
   - export PATH="$DOTNET_INSTALL_DIR:$PATH"
 script:
-  - ./build.sh
+  - pwd="`pwd`"
+  - dotnet --info
+  - dotnet restore
+  - dotnet build src/Trail --configuration Release
+  - dotnet build src/Trail.Flatware --configuration Release
+  - dotnet build src/Trail.BlazorRedux --configuration Release
+  - dotnet test test/Trail.Tests
+  - dotnet pack src/Trail --configuration Release -o $pwd/bin
+  - dotnet pack src/Trail.Flatware --configuration Release -o $pwd/bin
+  - dotnet pack src/Trail.BlazorRedux --configuration Release -o $pwd/bin
