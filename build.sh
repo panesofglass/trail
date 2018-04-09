@@ -2,12 +2,6 @@
 
 pwd="`pwd`"
 
-echo Cleaning ...
-rm -rf $pwd/bin
-dotnet clean src/Trail.BlazorRedux --configuration Release
-dotnet clean src/Trail.Flatware --configuration Release
-dotnet clean src/Trail --configuration Release
-
 echo Building ...
 dotnet restore
 dotnet build src/Trail --configuration Release
