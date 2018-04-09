@@ -28,7 +28,9 @@ install:
 script:
   - pwd="`pwd`"
   - dotnet --info
-  - dotnet restore
+  - dotnet restore src/Trail
+  - dotnet restore src/Trail.Flatware
+  - dotnet restore src/Trail.BlazorRedux
   - dotnet build src/Trail --configuration Release
   - dotnet build src/Trail.Flatware --configuration Release
   - dotnet build src/Trail.BlazorRedux --configuration Release
