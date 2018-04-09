@@ -24,7 +24,7 @@ module ActionCreators =
     open Microsoft.AspNetCore.Blazor
 
     let LoadWeather (http: HttpClient) =
-        let t = fun (dispatch: Dispatcher<MyMsg>) state -> 
+        let t (dispatch: Dispatcher<MyMsg>) state =
             task {
                 dispatch.Invoke(MyMsg.ClearWeather) |> ignore
                 let! forecasts = http.GetJsonAsync<WeatherForecast[]>("/sample-data/weather.json") |> Async.AwaitTask

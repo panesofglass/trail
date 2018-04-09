@@ -48,6 +48,8 @@ type FetchData () =
                             ]
                     ]
                 ]
+            //yield Dom.h1 [Dom.text "Debugger"] []
+            //yield Dom.comp<BlazorRedux.ReduxDebugger<MyModel, MyMsg>> [] []
         ]
 
     override this.OnInitAsync() =
