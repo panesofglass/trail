@@ -20,7 +20,11 @@ type App() =
     inherit MyAppComponent()
 
     override __.Render() =
-        Dom.router<Router> typeof<App>.Assembly
+        Dom.Fragment [
+            Dom.router<Router> typeof<App>.Assembly
+            Dom.comp<BlazorRedux.ReduxDevTools> [] []
+        ]
+
 
 (*
 // TODO: can we go ALL the way?

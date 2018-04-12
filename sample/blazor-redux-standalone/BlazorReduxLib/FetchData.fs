@@ -12,6 +12,7 @@ open Microsoft.AspNetCore.Blazor.Routing
 open BlazorApp1
 open BlazorApp1.Shared
 open Trail
+open BlazorRedux
 open Library1
 
 [<LayoutAttribute(typeof<MainLayout>)>]
@@ -48,12 +49,10 @@ type FetchData () =
                             ]
                     ]
                 ]
-            //yield Dom.h1 [Dom.text "Debugger"] []
-            //yield Dom.comp<BlazorRedux.ReduxDebugger<MyModel, MyMsg>> [] []
         ]
 
     override this.OnInitAsync() =
-        this.DispatchAsync(ActionCreators.LoadWeather(this.Http))
+        ActionCreators.LoadWeather(Dispatcher this.Store.Dispatch, this.Http)
     
     [<Inject>]
     member val private Http : HttpClient = Unchecked.defaultof<HttpClient> with get, set
