@@ -22,6 +22,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7DC7FD7F-318
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "project", "project", "{A76F8266-01B0-4B4D-91D0-EF71132BD42F}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		.travis.yml = .travis.yml
+		build.cmd = build.cmd
+		build.sh = build.sh
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
