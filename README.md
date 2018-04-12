@@ -12,7 +12,6 @@
 | :------ | :-----: | :-------: |
 | Trail | [![NuGet Status](http://img.shields.io/nuget/v/Trail.svg?style=flat)](https://www.nuget.org/packages/Trail/) | ![NuGet Downloads](https://img.shields.io/nuget/dt/Trail.svg?style=flat) |
 | Trail.BlazorRedux | [![NuGet Status](http://img.shields.io/nuget/v/Trail.BlazorRedux.svg?style=flat)](https://www.nuget.org/packages/Trail.BlazorRedux/) | ![NuGet Downloads](https://img.shields.io/nuget/dt/Trail.BlazorRedux.svg?style=flat) |
-| Trail.Flatware | [![NuGet Status](http://img.shields.io/nuget/v/Trail.Flatware.svg?style=flat)](https://www.nuget.org/packages/Trail.Flatware/) | ![NuGet Downloads](https://img.shields.io/nuget/dt/Trail.Flatware.svg?style=flat) |
 
 ## Features
 
@@ -170,16 +169,130 @@ Dom.comp<SurveyPrompt> [Dom.HtmlAttribute("title", "How is Blazor working for yo
 
 Note that the attribute name is lowercase. This is an area where I think we can improve type-safety with the DSL.
 
+### Blazor-Redux
+
+Trail provids [Blazor-Redux](https://github.com/torhovland/blazor-redux) component integration, as well.
+Follow the instructions in the [Blazor-Redux README](https://github.com/torhovland/blazor-redux/blob/master/README.md)
+to learn how to use that library. The primary change to use Trail is to convert your `Trail.Component` into a
+`Trail.ReduxComponent`. You will need to create a base component for your application,
+just as in the Blazor-Redux example, only it should be a `Trail.ReduxComponent`:
+
+``` fsharp
+[<AbstractClass>]
+type MyAppComponent() =
+    inherit Trail.ReduxComponent<MyModel, MyMsg>()
+```
+
+Note that this component has an `[<AbstractClass>]` attribute to indicate that it must be implemented. This is to avoid
+having to provide an implementation of the `Render` member.
+
+#### Counter
+
+The `Counter` component looks much like the one above, only you need to call `this.Dispatch` to dispatch the action,
+rather than handling directly within the component:
+
+``` fsharp
+[<Layout(typeof<MainLayout>)>]
+[<Route("/counter")>]
+type Counter () =
+    inherit MyAppComponent()
+
+    override this.Render() =
+        Dom.Fragment [
+            Dom.h1 [] [Dom.text "Counter"]
+            Dom.p [] [
+                Dom.text "Current count: "
+                Dom.textf "%i" this.State.Count
+            ]
+            Dom.button [
+                    Dom.BlazorFrameAttribute(this.onclick(Action(fun () -> this.Dispatch(MyMsg.IncrementByOne))))
+                ] [
+                    Dom.text "Click me"
+                ]
+        ]
+```
+
+#### FetchData
+
+The `FetchData` component is also very similar to the standard `FetchData` component above:
+
+``` fsharp
+[<Layout(typeof<MainLayout>)>]
+[<Route("/fetchdata")>]
+type FetchData () =
+    inherit MyAppComponent()
+
+    override this.Render() =
+        Dom.Fragment [
+            yield Dom.h1 [] [Dom.text "Weather forecast"]
+            yield Dom.p [] [Dom.text "This component domonstrates fetching data from the server."]
+            match this.State.Forecasts with
+            | None | Some [||] ->
+                yield Dom.p [] [
+                    Dom.em [] [Dom.text "Loading..."]
+                ]
+            | Some forecasts ->
+                yield Dom.table [Dom.HtmlAttribute("class", "table")] [
+                    Dom.thead [] [
+                        Dom.tr [] [
+                            Dom.th [] [Dom.text "Date"]
+                            Dom.th [] [Dom.text "Temp. (C)"]
+                            Dom.th [] [Dom.text "Temp. (F)"]
+                            Dom.th [] [Dom.text "Summary"]
+                        ]
+                    ]
+                    Dom.tbody [] [
+                        for forecast in forecasts ->
+                            Dom.tr [] [
+                                Dom.td [] [Dom.text (forecast.Date.ToShortDateString())]
+                                Dom.td [] [Dom.textf "%i" forecast.TemperatureC]
+                                Dom.td [] [Dom.textf "%i" forecast.TemperatureF]
+                                Dom.td [] [Dom.text forecast.Summary]
+                            ]
+                    ]
+                ]
+        ]
+
+    override this.OnInitAsync() =
+        ActionCreators.LoadWeather(BlazorRedux.Dispatcher this.Store.Dispatch, this.Http)
+    
+    [<Inject>]
+    member val private Http : HttpClient = Unchecked.defaultof<HttpClient> with get, set
+```
+
+Here, we use the `ActionCreators.LoadWeather`, as seen in the [Blazor-Redux example](https://github.com/torhovland/blazor-redux/blob/master/README.md).
+You must specify a `BlazorRedux.Dispatcher` delegate using `this.Store.Dispatch` method from the
+`Trail.ReduxComponent`, as well as the injected `this.Http` `HttpClient` instance.
+
+#### ReduxDevTools
+
+Blazor-Redux integrates with the [Redux DevTools](https://github.com/gaearon/redux-devtools), and you can add this
+integration to your `Trail.BlazorRedux` app by rendering the `BlazorRedux.ReduxDevTools` component. In the sample,
+I've added the component to the `App`:
+
+``` fsharp
+type App() =
+    inherit MyAppComponent()
+
+    override __.Render() =
+        Dom.Fragment [
+            Dom.router<Router> typeof<App>.Assembly
+            Dom.comp<BlazorRedux.ReduxDevTools> [] []
+        ]
+```
+
+You can find the [stand-alone sample here](https://github.com/panesofglass/trail/tree/master/sample/blazor-redux-standalone/).
+NOTE: this README does not cover the creation of the `MyModel`, `MyMsg`, or the reducer types and function. For those details,
+see the [sample above](https://github.com/panesofglass/trail/tree/master/sample/blazor-redux-standalone/) or the
+[Blazor-Redux README](https://github.com/torhovland/blazor-redux/blob/master/README.md).
+
 ## Roadmap
 
 - [ ] More documentation, samples, and tutorials!
-	- [x] [Flatware extension library](https://github.com/panesofglass/trail/issues/1)
-	- [x] Sample with [Flatware](https://github.com/torhovland/Flatware)
 	- [x] Sample with [Blazor-Redux](https://github.com/torhovland/blazor-redux)
 	- [x] [Full-stack sample](https://github.com/panesofglass/trail/issues/2)
 	- [ ] [Full-stack sample with Blazor-Redux](https://github.com/panesofglass/trail/issues/2)
 	- [ ] [Realworld.io](https://realworld.io/) [sample](https://github.com/panesofglass/trail/issues/4)
-	- [ ] [Realworld.io](https://realworld.io/) [sample with Flatware](https://github.com/panesofglass/trail/issues/4)
 - [ ] [Extend and improve markup helper DSL](https://github.com/panesofglass/trail/issues/5)
 - [ ] [Test and optimize performance](https://github.com/panesofglass/trail/issues/6)
 - [ ] [Create dotnet new templates](https://github.com/panesofglass/trail/issues/7)

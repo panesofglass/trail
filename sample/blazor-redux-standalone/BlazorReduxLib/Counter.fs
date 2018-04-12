@@ -14,8 +14,8 @@ open BlazorApp1.Shared
 open Trail
 open Library1
 
-[<LayoutAttribute(typeof<MainLayout>)>]
-[<RouteAttribute("/counter")>]
+[<Layout(typeof<MainLayout>)>]
+[<Route("/counter")>]
 type Counter () =
     inherit MyAppComponent()
 

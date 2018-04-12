@@ -12,10 +12,9 @@ open Microsoft.AspNetCore.Blazor.Routing
 open BlazorApp1
 open BlazorApp1.Shared
 open Trail
-open BlazorRedux
 open Library1
 
-[<LayoutAttribute(typeof<MainLayout>)>]
+[<Layout(typeof<MainLayout>)>]
 [<Route("/fetchdata")>]
 type FetchData () =
     inherit MyAppComponent()
@@ -52,7 +51,7 @@ type FetchData () =
         ]
 
     override this.OnInitAsync() =
-        ActionCreators.LoadWeather(Dispatcher this.Store.Dispatch, this.Http)
+        ActionCreators.LoadWeather(BlazorRedux.Dispatcher this.Store.Dispatch, this.Http)
     
     [<Inject>]
     member val private Http : HttpClient = Unchecked.defaultof<HttpClient> with get, set
