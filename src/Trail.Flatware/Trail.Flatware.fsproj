@@ -16,4 +16,8 @@
     <PackageReference Include="Trail" Version="0.0.*" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.0" PrivateAssets="All" /> 
+  </ItemGroup>
+
 </Project>

@@ -7,10 +7,9 @@ dotnet clean src\Trail.Flatware --configuration Release
 dotnet clean src\Trail --configuration Release
 
 echo Building ...
-dotnet restore
-dotnet build src\Trail --configuration Release
-dotnet build src\Trail.Flatware --configuration Release
-dotnet build src\Trail.BlazorRedux --configuration Release
+dotnet build src\Trail --configuration Release -v n /p:SourceLinkCreate=true
+dotnet build src\Trail.Flatware --configuration Release -v n /p:SourceLinkCreate=true
+dotnet build src\Trail.BlazorRedux --configuration Release -v n /p:SourceLinkCreate=true
 
 echo Testing ...
 dotnet test test\Trail.Tests

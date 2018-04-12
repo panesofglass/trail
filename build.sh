@@ -3,10 +3,9 @@
 pwd="`pwd`"
 
 echo Building ...
-dotnet restore
-dotnet build src/Trail --configuration Release
-dotnet build src/Trail.Flatware --configuration Release
-dotnet build src/Trail.BlazorRedux --configuration Release
+dotnet build src/Trail --configuration Release -v n
+dotnet build src/Trail.Flatware --configuration Release -v n
+dotnet build src/Trail.BlazorRedux --configuration Release -v n
 
 echo Testing ...
 dotnet test test/Trail.Tests
