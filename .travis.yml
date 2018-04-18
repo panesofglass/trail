@@ -27,9 +27,10 @@ install:
   - export PATH="$DOTNET_INSTALL_DIR:$PATH"
 script:
   - pwd="`pwd`"
+  - mkdir bin
   - dotnet --info
   - dotnet build src/Trail --configuration Release -v n
-  - dotnet build src/Trail.BlazorRedux --configuration Release -v n
   - dotnet test test/Trail.Tests
   - dotnet pack src/Trail --configuration Release -o $pwd/bin
+  - dotnet build src/Trail.BlazorRedux --configuration Release -v n
   - dotnet pack src/Trail.BlazorRedux --configuration Release -o $pwd/bin
