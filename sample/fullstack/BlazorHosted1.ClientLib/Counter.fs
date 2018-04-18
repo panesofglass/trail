@@ -26,7 +26,7 @@ type Counter () =
                 Dom.textf "%i" this.CurrentCount
             ]
             Dom.button [
-                    Dom.BlazorFrameAttribute(this.onclick(Action this.IncrementCount))
+                    Attr.onclick(this.IncrementCount)
                 ] [
                     Dom.text "Click me"
                 ]
@@ -34,5 +34,5 @@ type Counter () =
     
     member val private CurrentCount : int = 0 with get, set
 
-    member this.IncrementCount () =
+    member this.IncrementCount _ =
         this.CurrentCount <- Counter.incrementBy(1, this.CurrentCount)

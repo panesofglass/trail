@@ -205,7 +205,7 @@ type Counter () =
                 Dom.textf "%i" this.State.Count
             ]
             Dom.button [
-                    Dom.BlazorFrameAttribute(this.onclick(Action(fun () -> this.Dispatch(MyMsg.IncrementByOne))))
+                    Attr.onclick(fun _ -> this.Dispatch(MyMsg.IncrementByOne))
                 ] [
                     Dom.text "Click me"
                 ]

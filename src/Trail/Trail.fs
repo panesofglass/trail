@@ -6,8 +6,11 @@ open Microsoft.AspNetCore.Blazor.Components
 open Microsoft.AspNetCore.Blazor.Routing
 
 module Dom =
+
     type Attribute =
         | HtmlAttribute of name:string * value:string
+        | BlazorEventAttribute of name:string * handler:string
+        | BlazorEventHandlerAttribute of name:string * handler:MulticastDelegate
         | BlazorFrameAttribute of frame:RenderTree.RenderTreeFrame
         | BlazorObjAttribute of name:string * value:obj
 
@@ -53,6 +56,21 @@ module Dom =
     
     let text textContent = Text textContent
     let textf format content = Text(Printf.sprintf format content)
+
+module Attr =
+    open Dom
+    
+    let namedUIEvent name (handler:string) =
+        BlazorEventAttribute(name, BindMethods.GetEventHandlerValue(handler))
+    
+    let uiEventHandler name handler =
+        BlazorEventHandlerAttribute(name, BindMethods.GetEventHandlerValue(Action handler))
+
+    let typedUIEventHandler<'T when 'T :> UIEventArgs> name handler =
+        BlazorEventHandlerAttribute(name, BindMethods.GetEventHandlerValue(Action<'T> handler))
+    
+    let onclick handler =
+        typedUIEventHandler<UIMouseEventArgs> "onclick" handler
     
 module RenderTree =
     open Dom
@@ -67,6 +85,8 @@ module RenderTree =
         | AddBlazorFragmentAttribute of sequence:int * fragment:AST list
         | AddBlazorFrameAttribute of sequence:int * frame:RenderTree.RenderTreeFrame
         | AddBlazorObjAttribute of sequence:int * name:string * value:obj
+        | AddBlazorEventAttribute of sequence:int * name:string * handler:string
+        | AddBlazorEventHandlerAttribute of sequence:int * name:string * handler:MulticastDelegate
         | AddHtmlAttribute of sequence:int * name:string * value:string
 
     let rec build node =
@@ -95,6 +115,10 @@ module RenderTree =
                         match attr with
                         | HtmlAttribute(name, value) ->
                             yield AddHtmlAttribute(step, name, value)
+                        | BlazorEventAttribute(name, handler) ->
+                            yield AddBlazorEventAttribute(step, name, handler)
+                        | BlazorEventHandlerAttribute(name, handler) ->
+                            yield AddBlazorEventHandlerAttribute(step, name, handler)
                         | BlazorFrameAttribute(frame) ->
                             yield AddBlazorFrameAttribute(step, frame)
                         | BlazorObjAttribute(name, value) ->
@@ -117,6 +141,10 @@ module RenderTree =
                         match attr with
                         | HtmlAttribute(name, value) ->
                             yield AddHtmlAttribute(step, name, value)
+                        | BlazorEventAttribute(name, handler) ->
+                            yield AddBlazorEventAttribute(step, name, handler)
+                        | BlazorEventHandlerAttribute(name, handler) ->
+                            yield AddBlazorEventHandlerAttribute(step, name, handler)
                         | BlazorFrameAttribute(frame) ->
                             yield AddBlazorFrameAttribute(step, frame)
                         | BlazorObjAttribute(name, value) ->
@@ -179,6 +207,10 @@ module RenderTree =
                 builder.AddAttribute(sequence, frame)
             | AddBlazorObjAttribute(sequence, name, value) ->
                 builder.AddAttribute(sequence, name, value)
+            | AddBlazorEventAttribute(sequence, name, handler) ->
+                builder.AddAttribute(sequence, name, handler)
+            | AddBlazorEventHandlerAttribute(sequence, name, handler) ->
+                builder.AddAttribute(sequence, name, handler)
             | AddHtmlAttribute(sequence, name, value) ->
                 builder.AddAttribute(sequence, name, value)
 
