@@ -27,12 +27,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "project", "project", "{A76F
 		build.cmd = build.cmd
 		build.sh = build.sh
 		LICENSE = LICENSE
+		NuGet.Config = NuGet.Config
 		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "standalone", "standalone", "{CB98C266-A9A4-42CD-97F4-8128B63831FE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "fullstack", "fullstack", "{4286004B-4067-4136-9A0E-037B2BA67540}"
+	ProjectSection(SolutionItems) = preProject
+		sample\fullstack\global.json = sample\fullstack\global.json
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorHosted1.Client", "sample\fullstack\BlazorHosted1.Client\BlazorHosted1.Client.csproj", "{DB4A0ACE-F95C-4658-BA2F-DADF0E4DEF4D}"
 EndProject

@@ -15,9 +15,8 @@
 
   <ItemGroup>
     <PackageReference Include="Blazor-Redux" Version="0.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Blazor.Browser" Version="0.1.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Browser" Version="0.2.0" PrivateAssets="all" />
     <PackageReference Include="TaskBuilder.fs" Version="1.*" />
-    <PackageReference Include="Trail" Version="0.0.*" />
   </ItemGroup>
 
   <ItemGroup>
