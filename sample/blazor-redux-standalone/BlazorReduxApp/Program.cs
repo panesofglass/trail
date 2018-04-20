@@ -16,7 +16,9 @@ namespace BlazorApp1
                 configure.AddSingleton(
                     new Store<MyModel, MyMsg>(
                         Store.Reducer,
-                        new MyModel(0, null)));
+                        Store.LocationReducer,
+                        (state) => state.Location,
+                        new MyModel("", 0, null)));
             });
 
             new BrowserRenderer(serviceProvider).AddComponent<App>("app");
