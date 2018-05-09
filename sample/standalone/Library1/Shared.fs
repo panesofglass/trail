@@ -71,7 +71,7 @@ type NavMenu () =
         ]
 
 type MainLayout () =
-    inherit Trail.Component()
+    inherit Trail.LayoutComponent()
 
     override this.Render() =
         Dom.div [Dom.HtmlAttribute("class", "container-fluid")] [
@@ -84,12 +84,6 @@ type MainLayout () =
                 ]
             ]
         ]
-
-    member val Body : RenderFragment = Unchecked.defaultof<RenderFragment> with get, set
-
-    interface ILayoutComponent with
-        member this.Body with get() = this.Body
-                          and set(value) = this.Body <- value
 
 type SurveyPrompt () =
     inherit Trail.Component()
@@ -106,4 +100,5 @@ type SurveyPrompt () =
         ]
 
     // This is to demonstrate how a parent component can supply parameters
+    [<Parameter>]
     member val Title : string = Unchecked.defaultof<string> with get, set

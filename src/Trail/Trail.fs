@@ -4,15 +4,18 @@ open System
 open Microsoft.AspNetCore.Blazor
 open Microsoft.AspNetCore.Blazor.Components
 open Microsoft.AspNetCore.Blazor.Routing
+open Microsoft.AspNetCore.Blazor.Layouts
 
 module Dom =
+    open System.Reflection
 
     type Attribute =
         | HtmlAttribute of name:string * value:string
-        | BlazorEventAttribute of name:string * handler:string
+        | HtmlConditionalAttribute of name:string * value:bool
         | BlazorEventHandlerAttribute of name:string * handler:MulticastDelegate
         | BlazorFrameAttribute of frame:RenderTree.RenderTreeFrame
         | BlazorObjAttribute of name:string * value:obj
+        // TODO: Bind attribute?
 
     type Node =
         | Element of name:string * attrs:Attribute list * children:Node list
@@ -57,21 +60,85 @@ module Dom =
     let text textContent = Text textContent
     let textf format content = Text(Printf.sprintf format content)
 
+    let input attrs = Element("input", attrs, [])
+
 module Attr =
     open Dom
-    
-    let namedUIEvent name (handler:string) =
-        BlazorEventAttribute(name, BindMethods.GetEventHandlerValue(handler))
+
+    let href value = HtmlAttribute("href", value)
+    let id value = HtmlAttribute("id", value)
+    let isChecked value = HtmlConditionalAttribute("checked", value)
+    let isDisabled value = HtmlConditionalAttribute("disabled", value)
+    let name value = HtmlAttribute("name", value)
+    let rel value = HtmlAttribute("rel", value)
+    let typ value = HtmlAttribute("type", value)
+    let value value = HtmlAttribute("value", value)
+    let valuef format value = HtmlAttribute("value", Printf.sprintf format value)
     
     let uiEventHandler name handler =
         BlazorEventHandlerAttribute(name, BindMethods.GetEventHandlerValue(Action handler))
 
     let typedUIEventHandler<'T when 'T :> UIEventArgs> name handler =
         BlazorEventHandlerAttribute(name, BindMethods.GetEventHandlerValue(Action<'T> handler))
+
+    // List of all events here:
+    // https://github.com/aspnet/Blazor/blob/dev/src/Microsoft.AspNetCore.Blazor.Browser.JS/src/Rendering/EventForDotNet.ts
+
+    // TODO: may need to provide additional context to make this work correctly, e.g. from which attribute comes the value?
+    let onchange handler = typedUIEventHandler<UIChangeEventArgs> "onchange" handler
+
+    let oncopy handler = typedUIEventHandler<UIClipboardEventArgs> "oncopy" handler
+    let oncut handler = typedUIEventHandler<UIClipboardEventArgs> "oncut" handler
+    let onpaste handler = typedUIEventHandler<UIClipboardEventArgs> "onpaste" handler
+
+    let ondrag handler = typedUIEventHandler<UIDragEventArgs> "ondrag" handler
+    let ondragend handler = typedUIEventHandler<UIDragEventArgs> "ondragend" handler
+    let ondragenter handler = typedUIEventHandler<UIDragEventArgs> "ondragenter" handler
+    let ondragleave handler = typedUIEventHandler<UIDragEventArgs> "ondragleave" handler
+    let ondragover handler = typedUIEventHandler<UIDragEventArgs> "ondragover" handler
+    let ondragstart handler = typedUIEventHandler<UIDragEventArgs> "ondragstart" handler
+    let ondrop handler = typedUIEventHandler<UIDragEventArgs> "ondrop" handler
+
+    let onerror handler = typedUIEventHandler<UIProgressEventArgs> "onerror" handler
+
+    let onfocus handler = typedUIEventHandler<UIFocusEventArgs> "onfocus" handler
+    let onblur handler = typedUIEventHandler<UIFocusEventArgs> "onblur" handler
+    let onfocusin handler = typedUIEventHandler<UIFocusEventArgs> "onfocusin" handler
+    let onfocusout handler = typedUIEventHandler<UIFocusEventArgs> "onfocusout" handler
     
-    let onclick handler =
-        typedUIEventHandler<UIMouseEventArgs> "onclick" handler
-    
+    let onkeydown handler = typedUIEventHandler<UIKeyboardEventArgs> "onkeydown" handler
+    let onkeyup handler = typedUIEventHandler<UIKeyboardEventArgs> "onkeyup" handler
+    let onkeypress handler = typedUIEventHandler<UIKeyboardEventArgs> "onkeypress" handler
+
+    let oncontextmenu handler = typedUIEventHandler<UIMouseEventArgs> "oncontextmenu" handler
+    let onclick handler = typedUIEventHandler<UIMouseEventArgs> "onclick" handler
+    let onmouseover handler = typedUIEventHandler<UIMouseEventArgs> "onmouseover" handler
+    let onmouseout handler = typedUIEventHandler<UIMouseEventArgs> "onmouseout" handler
+    let onmousemove handler = typedUIEventHandler<UIMouseEventArgs> "onmousemove" handler
+    let onmousedown handler = typedUIEventHandler<UIMouseEventArgs> "onmousedown" handler
+    let onmouseup handler = typedUIEventHandler<UIMouseEventArgs> "onmouseup" handler
+    let ondblclick handler = typedUIEventHandler<UIMouseEventArgs> "ondblclick" handler
+
+    let onprogress handler = typedUIEventHandler<UIProgressEventArgs> "onprogress" handler
+
+    let ontouchcancel handler = typedUIEventHandler<UITouchEventArgs> "ontouchcancel" handler
+    let ontouchend handler = typedUIEventHandler<UITouchEventArgs> "ontouchend" handler
+    let ontouchmove handler = typedUIEventHandler<UITouchEventArgs> "ontouchmove" handler
+    let ontouchstart handler = typedUIEventHandler<UITouchEventArgs> "ontouchstart" handler
+
+    let ongotpointercapture handler = typedUIEventHandler<UIPointerEventArgs> "ongotpointercapture" handler
+    let onlostpointercapture handler = typedUIEventHandler<UIPointerEventArgs> "onlostpointercapture" handler
+    let onpointercancel handler = typedUIEventHandler<UIPointerEventArgs> "onpointercancel" handler
+    let onpointerdown handler = typedUIEventHandler<UIPointerEventArgs> "onpointerdown" handler
+    let onpointerenter handler = typedUIEventHandler<UIPointerEventArgs> "onpointerenter" handler
+    let onpointerleave handler = typedUIEventHandler<UIPointerEventArgs> "onpointerleave" handler
+    let onpointermove handler = typedUIEventHandler<UIPointerEventArgs> "onpointermove" handler
+    let onpointerout handler = typedUIEventHandler<UIPointerEventArgs> "onpointerout" handler
+    let onpointerover handler = typedUIEventHandler<UIPointerEventArgs> "onpointerover" handler
+    let onpointerup handler = typedUIEventHandler<UIPointerEventArgs> "onpointerup" handler
+
+    let onmousewheel handler = typedUIEventHandler<UIWheelEventArgs> "onmousewheel" handler
+
 module RenderTree =
     open Dom
 
@@ -85,7 +152,6 @@ module RenderTree =
         | AddBlazorFragmentAttribute of sequence:int * fragment:AST list
         | AddBlazorFrameAttribute of sequence:int * frame:RenderTree.RenderTreeFrame
         | AddBlazorObjAttribute of sequence:int * name:string * value:obj
-        | AddBlazorEventAttribute of sequence:int * name:string * handler:string
         | AddBlazorEventHandlerAttribute of sequence:int * name:string * handler:MulticastDelegate
         | AddHtmlAttribute of sequence:int * name:string * value:string
 
@@ -115,8 +181,8 @@ module RenderTree =
                         match attr with
                         | HtmlAttribute(name, value) ->
                             yield AddHtmlAttribute(step, name, value)
-                        | BlazorEventAttribute(name, handler) ->
-                            yield AddBlazorEventAttribute(step, name, handler)
+                        | HtmlConditionalAttribute(name, value) ->
+                            yield AddBlazorObjAttribute(step, name, value)
                         | BlazorEventHandlerAttribute(name, handler) ->
                             yield AddBlazorEventHandlerAttribute(step, name, handler)
                         | BlazorFrameAttribute(frame) ->
@@ -141,8 +207,8 @@ module RenderTree =
                         match attr with
                         | HtmlAttribute(name, value) ->
                             yield AddHtmlAttribute(step, name, value)
-                        | BlazorEventAttribute(name, handler) ->
-                            yield AddBlazorEventAttribute(step, name, handler)
+                        | HtmlConditionalAttribute(name, value) ->
+                            yield AddBlazorObjAttribute(step, name, value)
                         | BlazorEventHandlerAttribute(name, handler) ->
                             yield AddBlazorEventHandlerAttribute(step, name, handler)
                         | BlazorFrameAttribute(frame) ->
@@ -154,7 +220,7 @@ module RenderTree =
             match children with
             | [] -> closeComponent next (fun (sequence', rest) -> cont(sequence', instructions @ rest)) step
             | _ ->
-                // TODO: Correctly nest createing the fragment attribute and closing the component within the continuation.
+                // TODO: Correctly nest creating the fragment attribute and closing the component within the continuation.
                 let sequence', children = buildNodes children (step + 1) id
                 let fragment = AddBlazorFragmentAttribute(step, children)
                 closeComponent next (fun (sequence'', rest) -> cont(sequence'', instructions @ [fragment] @ rest)) sequence'
@@ -207,8 +273,6 @@ module RenderTree =
                 builder.AddAttribute(sequence, frame)
             | AddBlazorObjAttribute(sequence, name, value) ->
                 builder.AddAttribute(sequence, name, value)
-            | AddBlazorEventAttribute(sequence, name, handler) ->
-                builder.AddAttribute(sequence, name, handler)
             | AddBlazorEventHandlerAttribute(sequence, name, handler) ->
                 builder.AddAttribute(sequence, name, handler)
             | AddHtmlAttribute(sequence, name, value) ->
@@ -217,6 +281,18 @@ module RenderTree =
 [<AbstractClass>]
 type Component () =
     inherit BlazorComponent()
+    
+    abstract Render : unit -> Dom.Node
+
+    override this.BuildRenderTree(builder) =
+        base.BuildRenderTree(builder)
+        this.Render()
+        |> RenderTree.build
+        |> RenderTree.render builder
+
+[<AbstractClass>]
+type LayoutComponent () =
+    inherit BlazorLayoutComponent()
     
     abstract Render : unit -> Dom.Node
 

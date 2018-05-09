@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blazor-Redux" Version="0.0.4" />
-    <PackageReference Include="Trail" Version="0.0.5" />
+    <PackageReference Include="Blazor-Redux" Version="0.0.5" />
+    <PackageReference Include="Trail" Version="0.0.6" />
   </ItemGroup>
 
   <ItemGroup>
