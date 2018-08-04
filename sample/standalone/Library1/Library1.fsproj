@@ -11,10 +11,11 @@
     <Compile Include="Counter.fs" />
     <Compile Include="FetchData.fs" />
     <Compile Include="App.fs" />
+    <Compile Include="Startup.fs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Blazor.Browser" Version="0.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Browser" Version="0.5.1" />
   </ItemGroup>
 
   <ItemGroup>
