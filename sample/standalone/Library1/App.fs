@@ -20,17 +20,3 @@ type App() =
 
     override __.Render() =
         Dom.router<Router> typeof<App>.Assembly
-
-(*
-// TODO: can we go ALL the way?
-module Program =
-    [<EntryPoint>]
-    let main _ =
-        let serviceProvider = new BrowserServiceProvider(fun configure ->
-            // Add any custom services here
-            ()
-        )
-
-        (new BrowserRenderer(serviceProvider)).AddComponent<App>("app")
-        0
-*)

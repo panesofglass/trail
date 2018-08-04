@@ -13,7 +13,7 @@ module Dom =
         | HtmlAttribute of name:string * value:string
         | HtmlConditionalAttribute of name:string * value:bool
         | BlazorEventHandlerAttribute of name:string * handler:MulticastDelegate
-        | BlazorFrameAttribute of frame:RenderTree.RenderTreeFrame
+        | BlazorFrameAttribute of frame:RenderTree.RenderTreeFrame ref
         | BlazorObjAttribute of name:string * value:obj
         // TODO: Bind attribute?
 
@@ -65,8 +65,9 @@ module Dom =
 module Attr =
     open Dom
 
-    let href value = HtmlAttribute("href", value)
     let id value = HtmlAttribute("id", value)
+    let className value = HtmlAttribute("class", value)
+    let href value = HtmlAttribute("href", value)
     let isChecked value = HtmlConditionalAttribute("checked", value)
     let isDisabled value = HtmlConditionalAttribute("disabled", value)
     let name value = HtmlAttribute("name", value)
@@ -150,7 +151,7 @@ module RenderTree =
         | AddTextContent of sequence:int * textContent:string
         | AddRenderFragmentContent of sequence:int * fragment:RenderFragment
         | AddBlazorFragmentAttribute of sequence:int * fragment:AST list
-        | AddBlazorFrameAttribute of sequence:int * frame:RenderTree.RenderTreeFrame
+        | AddBlazorFrameAttribute of sequence:int * frame:RenderTree.RenderTreeFrame ref
         | AddBlazorObjAttribute of sequence:int * name:string * value:obj
         | AddBlazorEventHandlerAttribute of sequence:int * name:string * handler:MulticastDelegate
         | AddHtmlAttribute of sequence:int * name:string * value:string
