@@ -30,7 +30,7 @@
 5. Add the following libraries to the F# library project:
 ``` xml
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Blazor.Browser" Version="0.2.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Browser" Version="0.5.1" />
     <PackageReference Include="Trail" Version="0.*" />
   </ItemGroup>
 ```
