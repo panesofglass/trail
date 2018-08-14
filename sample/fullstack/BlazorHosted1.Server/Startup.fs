@@ -4,7 +4,6 @@ open Microsoft.AspNetCore.Blazor.Server
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
 open Microsoft.AspNetCore.ResponseCompression
-open Microsoft.AspNetCore.Http
 open Microsoft.Extensions.DependencyInjection
 open Newtonsoft.Json.Serialization
 open System.Linq
@@ -16,9 +15,7 @@ type Startup() =
     // This method gets called by the runtime. Use this method to add services to the container.
     // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
     member this.ConfigureServices(services: IServiceCollection) =
-        services.AddMvc().AddJsonOptions(fun options ->
-            options.SerializerSettings.ContractResolver <- DefaultContractResolver()
-        ) |> ignore
+        services.AddMvc() |> ignore
 
         services.AddResponseCompression(fun options ->
             options.MimeTypes <-

@@ -11,6 +11,7 @@
     <Compile Include="Counter.fs" />
     <Compile Include="FetchData.fs" />
     <Compile Include="App.fs" />
+    <Compile Include="Startup.fs" />
   </ItemGroup>
 
   <ItemGroup>

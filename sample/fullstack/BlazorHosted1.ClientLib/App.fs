@@ -12,7 +12,7 @@ open Microsoft.AspNetCore.Blazor.Components
 open Microsoft.AspNetCore.Blazor.Layouts
 open Microsoft.AspNetCore.Blazor.Routing
 open BlazorHosted1.Client
-open BlazorHosted1.Client.Shared
+open BlazorHosted1.Shared
 open Trail
 
 type App() =
@@ -20,17 +20,3 @@ type App() =
 
     override __.Render() =
         Dom.router<Router> typeof<App>.Assembly
-
-(*
-// TODO: can we go ALL the way?
-module Program =
-    [<EntryPoint>]
-    let main _ =
-        let serviceProvider = new BrowserServiceProvider(fun configure ->
-            // Add any custom services here
-            ()
-        )
-
-        (new BrowserRenderer(serviceProvider)).AddComponent<App>("app")
-        0
-*)

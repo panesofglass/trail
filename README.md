@@ -110,9 +110,6 @@ The `Render` method is then implemented with a `Dom.Fragment`. This keeps things
 
 Finally, you can see Trail already provides several helper elements, e.g. `h1`, `text`, and `comp<'T>`. What's a `comp<'T>`? As you may suspect, this is a way of rendering a custom Blazor component. We'll look at the `SurveyPrompt` after the `MainLayout`.
 
-> Aside:
-> You may be wondering, "What's with all the namespaces?" The namespaces are repeated because, at least in my experiments, I found that the web assembly compiler seems to need those opened in order to compile properly. We may be able to reduce them a bit now that it's all in F#.
-
 ### Shared
 
 There are several shared components, including the navigation menu, the main layout, and the survey. You can find these in the `Shared.fs` file in the [sample folder](https://github.com/panesofglass/trail/blob/master/sample/standalone/Library1/Shared.fs).
