@@ -3,8 +3,6 @@
 [Blazor](https://github.com/aspnet/Blazor) rendering with [F#](http://fsharp.org/).
 
 [![Build Status](https://travis-ci.org/panesofglass/trail.svg?branch=master)](https://travis-ci.org/panesofglass/trail)
-[![Issue Stats](http://issuestats.com/github/panesofglass/trail/badge/issue)](http://issuestats.com/github/panesofglass/trail)
-[![PR Stats](http://issuestats.com/github/panesofglass/trail/badge/pr)](http://issuestats.com/github/panesofglass/trail)
 
 ## Packages
 
