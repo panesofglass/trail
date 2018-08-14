@@ -9,6 +9,7 @@ addons:
   apt:
     packages:
     - libunwind8
+  chrome: stable
 mono: none
 os:
 - linux
