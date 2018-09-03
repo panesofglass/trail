@@ -9,5 +9,7 @@
     <PackageProjectUrl>https://github.com/panesofglass/trail</PackageProjectUrl>
     <PackageTags>F#;FSharp;Blazor;aspnet;webassembly;wasm</PackageTags>
     <RepositoryUrl>https://github.com/panesofglass/trail</RepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
 </Project>

@@ -1,35 +1,34 @@
 ﻿namespace BlazorApp1.Pages
 
-open System
-open System.Collections.Generic
-open System.Linq
-open System.Threading.Tasks
 open System.Net.Http
-open Microsoft.AspNetCore.Blazor
 open Microsoft.AspNetCore.Blazor.Components
 open Microsoft.AspNetCore.Blazor.Layouts
-open Microsoft.AspNetCore.Blazor.Routing
-open BlazorApp1
 open BlazorApp1.Shared
 open Trail
 open Library1
 
-[<Layout(typeof<MainLayout>)>]
+[<LayoutAttribute(typeof<MainLayout>)>]
 [<Route("/fetchdata")>]
 type FetchData () =
     inherit MyAppComponent()
+
+    [<Inject>]
+    member val private Http : HttpClient = Unchecked.defaultof<HttpClient> with get, set
+
+    override this.OnInitAsync() =
+        ActionCreators.loadWeather(BlazorRedux.Dispatcher this.Store.Dispatch, this.Http)
 
     override this.Render() =
         Dom.Fragment [
             yield Dom.h1 [] [Dom.text "Weather forecast"]
             yield Dom.p [] [Dom.text "This component domonstrates fetching data from the server."]
             match this.State.Forecasts with
-            | None | Some [||] ->
+            | None ->
                 yield Dom.p [] [
                     Dom.em [] [Dom.text "Loading..."]
                 ]
             | Some forecasts ->
-                yield Dom.table [Dom.HtmlAttribute("class", "table")] [
+                yield Dom.table [Attr.className "table"] [
                     Dom.thead [] [
                         Dom.tr [] [
                             Dom.th [] [Dom.text "Date"]
@@ -49,9 +48,3 @@ type FetchData () =
                     ]
                 ]
         ]
-
-    override this.OnInitAsync() =
-        ActionCreators.LoadWeather(BlazorRedux.Dispatcher this.Store.Dispatch, this.Http)
-    
-    [<Inject>]
-    member val private Http : HttpClient = Unchecked.defaultof<HttpClient> with get, set
