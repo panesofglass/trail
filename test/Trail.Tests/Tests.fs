@@ -37,7 +37,7 @@ let tests =
     testCase "Nested elements produce expected AST" <| fun _ ->
         let dom =
             Dom.div [] [
-                Dom.a [Dom.HtmlAttribute("href","https://github.com/panesofglass/trail")] [Dom.text "link"]
+                Dom.a [Attr.href "https://github.com/panesofglass/trail"] [Dom.text "link"]
             ]
         let ast = RenderTree.build dom
         let expected = [
@@ -57,7 +57,7 @@ let tests =
             Dom.Fragment [
                 Dom.h1 [] [Dom.text "Navigation"]
                 Dom.div [] [
-                    Dom.a [Dom.HtmlAttribute("href","https://github.com/panesofglass/trail")] [Dom.text "link"]
+                    Dom.a [Attr.href "https://github.com/panesofglass/trail"] [Dom.text "link"]
                 ]
             ]
         let ast = RenderTree.build dom
