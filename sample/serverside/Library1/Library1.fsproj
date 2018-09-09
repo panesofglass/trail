@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Library.fs" />
+    <Compile Include="Shared.fs" />
+    <Compile Include="Index.fs" />
+    <Compile Include="Counter.fs" />
+    <Compile Include="FetchData.fs" />
+    <Compile Include="App.fs" />
+    <Compile Include="Startup.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Browser" Version="0.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Trail\Trail.fsproj" />
+  </ItemGroup>
+
+</Project>

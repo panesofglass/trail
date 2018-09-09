@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Blazor.Hosting;
+using BlazorApp1;
 
 namespace BlazorApp1.App
 {
@@ -6,11 +7,7 @@ namespace BlazorApp1.App
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            Startup.CreateHostBuilder().Build().Run();
         }
-
-        public static IWebAssemblyHostBuilder CreateHostBuilder(string[] args) =>
-            BlazorWebAssemblyHost.CreateDefaultBuilder()
-                .UseBlazorStartup<Startup>();
     }
 }

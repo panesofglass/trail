@@ -14,4 +14,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Blazor.Build" Version="0.5.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Library1\Library1.fsproj" />
+  </ItemGroup>
+
 </Project>
