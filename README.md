@@ -4,6 +4,11 @@
 
 [![Build Status](https://travis-ci.org/panesofglass/trail.svg?branch=master)](https://travis-ci.org/panesofglass/trail)
 
+## UPDATE Jan 18, 2019
+
+Thank you to everyone who showed interest in this project. For those looking for updates, please see the [Bolero](https://github.com/fsbolero/Bolero) project, which has already completed and surpassed my goals for trail.
+I do not currently have any plans to continue working on this project and recommend all interested parties to contribute to [Bolero](https://github.com/fsbolero/Bolero) instead.
+
 ## Packages
 
 | Package | NuGet | Downloads |
